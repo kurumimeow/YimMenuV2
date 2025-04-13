@@ -40,6 +40,7 @@ namespace YimMenu::Submenus
 		}));
 		sep->AddItem(std::make_shared<CommandItem>("cayopericoheistsetsecondarytakevalue"_J));
 
+		misc->AddItem(std::make_shared<CommandItem>("cayopericoheistskipcooldown"_J));
 		misc->AddItem(std::make_shared<CommandItem>("cayopericoheistskiphacking"_J));
 		misc->AddItem(std::make_shared<CommandItem>("cayopericoheistcutsewer"_J));
 		misc->AddItem(std::make_shared<CommandItem>("cayopericoheistcutglass"_J));

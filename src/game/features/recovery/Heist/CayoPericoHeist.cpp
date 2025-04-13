@@ -148,6 +148,18 @@ namespace YimMenu::Features
 			}
 		};
 
+		class SkipCooldown : public Command
+		{
+			using Command::Command;
+
+			virtual void OnCall() override
+			{
+				Stats::SetInt("MPX_H4_TARGET_POSIX", 1);
+				Stats::SetInt("MPX_H4_COOLDOWN", 1);
+				Stats::SetInt("MPX_H4_COOLDOWN_HARD", 1);
+			}
+		};
+
 		class SkipHacking : public Command
 		{
 			using Command::Command;
@@ -221,6 +233,7 @@ namespace YimMenu::Features
 		static Setup _CayoPericoHeistSetup{"cayopericoheistsetup", "Setup", "Sets up cayo perico heist"};
 		static SetPrimaryTargetValue _CayoPericoHeistSetPrimaryTargetValue{"cayopericoheistsetprimarytargetvalue", "Set Primary Target Value", "Updates primary target value"};
 		static SetSecondaryTakeValue _CayoPericoHeistSetSecondaryTakeValue{"cayopericoheistsetsecondarytakevalue", "Set Secondary Take Value", "Updates secondary take value"};
+		static SkipCooldown _CayoPericoHeistSkipCooldown{"cayopericoheistskipcooldown", "Skip Cooldown", "Skips the cooldown between each Cayo Perico heist"};
 		static SkipHacking _CayoPericoHeistSkipHacking{"cayopericoheistskiphacking", "Skip Hacking", "Skips hacking process"};
 		static CutSewer _CayoPericoHeistCutSewer{"cayopericoheistcutsewer", "Cut Sewer", "Cuts the sewer"};
 		static CutGlass _CayoPericoHeistCutGlass{"cayopericoheistcutglass", "Cut Glass", "Cuts the glass"};
