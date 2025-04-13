@@ -2,6 +2,8 @@
 #include <cstddef>
 #include <type_traits>
 #include <types/script/scrThread.hpp>
+#include <core/util/Joaat.hpp>
+#include <src/game/gta/Scripts.hpp>
 
 namespace YimMenu
 {
@@ -31,6 +33,12 @@ namespace YimMenu
         {
 
         }
+
+        constexpr ScriptLocal(joaat_t script, std::size_t index) :
+		    ScriptLocal(Scripts::FindScriptThread(script)->m_Stack, index)
+		{
+
+		}
 
         constexpr ScriptLocal At(std::ptrdiff_t offset) const
         {
@@ -63,6 +71,18 @@ namespace YimMenu
 		std::enable_if_t<std::is_lvalue_reference_v<T>, T> As()
 		{
 			return *static_cast<std::add_pointer_t<std::remove_reference_t<T>>>(Get());
+		}
+
+        template<typename T>
+		constexpr T GetValue()
+		{
+			return *this->As<T*>();
+		}
+
+		template<typename T>
+		constexpr void SetValue(T value)
+		{
+			*this->As<T*>() = value;
 		}
 
         bool CanAccess() const;

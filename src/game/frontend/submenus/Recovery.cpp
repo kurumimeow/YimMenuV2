@@ -3,6 +3,7 @@
 #include "game/features/recovery/GiveVehicleReward.hpp"
 #include "Recovery/StatEditor.hpp"
 #include "Recovery/Transactions.hpp"
+#include "Recovery/HeistModifier.hpp"
 
 namespace YimMenu::Submenus
 {
@@ -40,5 +41,6 @@ namespace YimMenu::Submenus
 		AddCategory(std::move(missions));
 		AddCategory(BuildStatEditorMenu());
 		AddCategory(BuildTransactionsMenu());
+		AddCategory(BuildHeistModifierMenu());
 	}
 }
