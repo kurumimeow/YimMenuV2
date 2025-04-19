@@ -36,18 +36,6 @@ namespace YimMenu
 			return *static_cast<std::add_pointer_t<std::remove_reference_t<T>>>(Get());
 		}
 
-        template<typename T>
-		constexpr T GetValue()
-        {
-			return *this->As<T*>();
-        }
-
-        template<typename T>
-		constexpr void SetValue(T value)
-		{
-			*this->As<T*>() = value;
-		}
-
         bool CanAccess() const;
 
     private:

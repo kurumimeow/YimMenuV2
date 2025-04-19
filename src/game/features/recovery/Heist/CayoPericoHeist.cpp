@@ -7,15 +7,16 @@
 #include "game/gta/ScriptGlobal.hpp"
 #include "game/gta/ScriptLocal.hpp"
 #include "core/backend/ScriptMgr.hpp"
+#include "game/backend/Tunables.hpp"
 
 namespace YimMenu::Features
 {
 	namespace CayoPericoHeist
 	{
 		static IntCommand _CayoPericoHeistCut1{"cayopericoheistcut1", "Player 1", "Player 1 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _CayoPericoHeistCut2{"cayopericoheistcut2", "Player 2", "Player 1 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _CayoPericoHeistCut3{"cayopericoheistcut3", "Player 3", "Player 1 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _CayoPericoHeistCut4{"cayopericoheistcut4", "Player 4", "Player 1 cut", std::nullopt, std::nullopt, 0};
+		static IntCommand _CayoPericoHeistCut2{"cayopericoheistcut2", "Player 2", "Player 2 cut", std::nullopt, std::nullopt, 0};
+		static IntCommand _CayoPericoHeistCut3{"cayopericoheistcut3", "Player 3", "Player 3 cut", std::nullopt, std::nullopt, 0};
+		static IntCommand _CayoPericoHeistCut4{"cayopericoheistcut4", "Player 4", "Player 4 cut", std::nullopt, std::nullopt, 0};
 
 		class SetCuts : public Command
 		{
@@ -23,10 +24,12 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				ScriptGlobal(1973698 + 831 + 56 + 1).SetValue<int>(_CayoPericoHeistCut1.GetState());
-                ScriptGlobal(1973698 + 831 + 56 + 2).SetValue<int>(_CayoPericoHeistCut2.GetState());
-                ScriptGlobal(1973698 + 831 + 56 + 3).SetValue<int>(_CayoPericoHeistCut3.GetState());
-				ScriptGlobal(1973698 + 831 + 56 + 4).SetValue<int>(_CayoPericoHeistCut4.GetState());
+				auto base = ScriptGlobal(1973698).At(831).At(56);
+
+				*base.At(1).As<int*>() = _CayoPericoHeistCut1.GetState();
+				*base.At(2).As<int*>() = _CayoPericoHeistCut2.GetState();
+				*base.At(3).As<int*>() = _CayoPericoHeistCut3.GetState();
+				*base.At(4).As<int*>() = _CayoPericoHeistCut4.GetState();
 			}
 		};
 
@@ -36,9 +39,12 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				ScriptGlobal(1974810 + 1 + (1 * 27) + 8 + 1).SetValue<int>(1);
-                ScriptGlobal(1974810 + 1 + (2 * 27) + 8 + 2).SetValue<int>(1);
-                ScriptGlobal(1974810 + 1 + (3 * 27) + 8 + 3).SetValue<int>(1);
+				auto base = ScriptGlobal(1974810);
+
+				*base.At(0, 27).At(8).At(0).As<int*>() = 1;
+				*base.At(1, 27).At(8).At(1).As<int*>() = 1;
+                *base.At(2, 27).At(8).At(2).As<int*>() = 1;
+                *base.At(3, 27).At(8).At(3).As<int*>() = 1;
 			}
 		};
 
@@ -65,7 +71,7 @@ namespace YimMenu::Features
 			{4, "Saboteur"},
 			{5, "Marksman"}
 		};
-		static ListCommand _CayoPericoHeistWeapon{"cayopericoheistweapon", "Weapon", "Weapon category", cayoPericoHeistWeapon, 2};
+		static ListCommand _CayoPericoHeistWeapon{"cayopericoheistweapon", "Weapon", "Weapon category", cayoPericoHeistWeapon, 1};
 
 		class Setup : public Command
 		{
@@ -115,7 +121,7 @@ namespace YimMenu::Features
 
                 ScriptMgr::Yield(500ms);
 
-                ScriptLocal("heist_island_planning"_J, 1566).SetValue<int>(2); // Reload Planning Screen
+				*ScriptLocal("heist_island_planning"_J, 1566).As<int*>() = 2;
 			}
 		};
 
@@ -127,11 +133,17 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				int primary_target = Stats::GetInt("MPX_H4CNF_TARGET");
+				auto primary_target = Stats::GetInt("MPX_H4CNF_TARGET");
 
-				if (0 <= primary_target && primary_target <= 5)
+				switch (primary_target)
 				{
-					ScriptGlobal(262145 + 29496 + primary_target).SetValue<int>(_CayoPericoHeistPrimaryTargetValue.GetState());
+				case 0: *Tunables::GetTunable("IH_PRIMARY_TARGET_VALUE_TEQUILA"_J).As<int*>() = _CayoPericoHeistPrimaryTargetValue.GetState(); break;
+				case 1:	*Tunables::GetTunable("IH_PRIMARY_TARGET_VALUE_PEARL_NECKLACE"_J).As<int*>() = _CayoPericoHeistPrimaryTargetValue.GetState(); break;
+				case 2:	*Tunables::GetTunable("IH_PRIMARY_TARGET_VALUE_BEARER_BONDS"_J).As<int*>() = _CayoPericoHeistPrimaryTargetValue.GetState(); break;
+				case 3:	*Tunables::GetTunable("IH_PRIMARY_TARGET_VALUE_PINK_DIAMOND"_J).As<int*>() = _CayoPericoHeistPrimaryTargetValue.GetState(); break;
+				case 4:	*Tunables::GetTunable("IH_PRIMARY_TARGET_VALUE_MADRAZO_FILES"_J).As<int*>() = _CayoPericoHeistPrimaryTargetValue.GetState(); break;
+				case 5:	*Tunables::GetTunable("IH_PRIMARY_TARGET_VALUE_SAPPHIRE_PANTHER_STATUE"_J).As<int*>() = _CayoPericoHeistPrimaryTargetValue.GetState(); break;
+				default: break;
 				}
 			}
 		};
@@ -144,19 +156,7 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				ScriptLocal("fm_mission_controller_2020"_J, 56033 + 1518 + 53).SetValue<int>(_CayoPericoHeistSecondaryTakeValue.GetState());
-			}
-		};
-
-		class SkipCooldown : public Command
-		{
-			using Command::Command;
-
-			virtual void OnCall() override
-			{
-				Stats::SetInt("MPX_H4_TARGET_POSIX", 1);
-				Stats::SetInt("MPX_H4_COOLDOWN", 1);
-				Stats::SetInt("MPX_H4_COOLDOWN_HARD", 1);
+				*ScriptLocal("fm_mission_controller_2020"_J, 56033).At(1518).At(53).As<int*>() = _CayoPericoHeistSecondaryTakeValue.GetState();
 			}
 		};
 
@@ -166,7 +166,7 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				ScriptLocal("fm_mission_controller_2020"_J, 25388).SetValue<int>(5);
+				*ScriptLocal("fm_mission_controller_2020"_J, 25388).As<int*>() = 5;
 			}
 		};
 
@@ -176,7 +176,7 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				ScriptLocal("fm_mission_controller_2020"_J, 30212).SetValue<int>(6);
+				*ScriptLocal("fm_mission_controller_2020"_J, 30212).As<int*>() = 6;
 			}
 		};
 
@@ -186,7 +186,7 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				ScriptLocal("fm_mission_controller_2020"_J, 31451 + 3).SetValue<float>(100.0f);
+				*ScriptLocal("fm_mission_controller_2020"_J, 31451).At(3).As<float*>() = 100.0f;
 			}
 		};
 
@@ -203,14 +203,29 @@ namespace YimMenu::Features
 
 				auto pos     = ped.GetPosition();
 				auto heading = ped.GetHeading();
+				auto primary_target = Stats::GetInt("MPX_H4CNF_TARGET");
 
 				TASK::TASK_GO_STRAIGHT_TO_COORD(ped.GetHandle(), 5006.917, -5755.931, 15.484, 1.0, 3, 15, 5);
-				ScriptLocal("fm_mission_controller_2020"_J, 31450).SetValue<int>(5);
-				ScriptLocal("fm_mission_controller_2020"_J, 31451).SetValue<int>(3);
+
+				switch (primary_target)
+				{
+				case 0:
+				case 1:
+				case 3:
+				case 5:
+					*ScriptLocal("fm_mission_controller_2020"_J, 31450).As<int*>() = 5;
+					*ScriptLocal("fm_mission_controller_2020"_J, 31451).As<int*>() = 3;
+					break;
+				case 2:
+				case 4:
+					*ScriptLocal("fm_mission_controller_2020"_J, 31426).As<int*>() = 7;
+					break;
+				default: break;
+				}
 
 				ScriptMgr::Yield(4000ms);
 
-                TASK::TASK_GO_STRAIGHT_TO_COORD(ped.GetHandle(), pos.x, pos.y, pos.z, 1.0, 3, heading, 5);
+				TASK::TASK_GO_STRAIGHT_TO_COORD(ped.GetHandle(), pos.x, pos.y, pos.z, 1.0, 3, heading, 5);
 			}
 		};
 
@@ -223,8 +238,8 @@ namespace YimMenu::Features
 				Scripts::ForceScriptHost(Scripts::FindScriptThread("fm_mission_controller_2020"_J));
 				ScriptMgr::Yield(500ms);
 
-				ScriptLocal("fm_mission_controller_2020"_J, 52581).SetValue<int>(9);
-				ScriptLocal("fm_mission_controller_2020"_J, 52581 + 1776 + 1).SetValue<int>(50);
+				*ScriptLocal("fm_mission_controller_2020"_J, 52581).As<int*>() = 9;
+				*ScriptLocal("fm_mission_controller_2020"_J, 52581).At(1776).At(1).As<int*>() = 50;
 			}
 		};
 
@@ -233,7 +248,6 @@ namespace YimMenu::Features
 		static Setup _CayoPericoHeistSetup{"cayopericoheistsetup", "Setup", "Sets up cayo perico heist"};
 		static SetPrimaryTargetValue _CayoPericoHeistSetPrimaryTargetValue{"cayopericoheistsetprimarytargetvalue", "Set Primary Target Value", "Updates primary target value"};
 		static SetSecondaryTakeValue _CayoPericoHeistSetSecondaryTakeValue{"cayopericoheistsetsecondarytakevalue", "Set Secondary Take Value", "Updates secondary take value"};
-		static SkipCooldown _CayoPericoHeistSkipCooldown{"cayopericoheistskipcooldown", "Skip Cooldown", "Skips the cooldown between each Cayo Perico heist"};
 		static SkipHacking _CayoPericoHeistSkipHacking{"cayopericoheistskiphacking", "Skip Hacking", "Skips hacking process"};
 		static CutSewer _CayoPericoHeistCutSewer{"cayopericoheistcutsewer", "Cut Sewer", "Cuts the sewer"};
 		static CutGlass _CayoPericoHeistCutGlass{"cayopericoheistcutglass", "Cut Glass", "Cuts the glass"};

@@ -11,9 +11,9 @@ namespace YimMenu::Features
 	namespace DoomsdayHeist
 	{
 		static IntCommand _DoomsdayHeistCut1{"doomsdayheistcut1", "Player 1", "Player 1 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _DoomsdayHeistCut2{"doomsdayheistcut2", "Player 2", "Player 1 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _DoomsdayHeistCut3{"doomsdayheistcut3", "Player 3", "Player 1 cut", std::nullopt, std::nullopt, 0};
-		static IntCommand _DoomsdayHeistCut4{"doomsdayheistcut4", "Player 4", "Player 1 cut", std::nullopt, std::nullopt, 0};
+		static IntCommand _DoomsdayHeistCut2{"doomsdayheistcut2", "Player 2", "Player 2 cut", std::nullopt, std::nullopt, 0};
+		static IntCommand _DoomsdayHeistCut3{"doomsdayheistcut3", "Player 3", "Player 3 cut", std::nullopt, std::nullopt, 0};
+		static IntCommand _DoomsdayHeistCut4{"doomsdayheistcut4", "Player 4", "Player 4 cut", std::nullopt, std::nullopt, 0};
 
 		class SetCuts : public Command
 		{
@@ -21,10 +21,12 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				ScriptGlobal(1962078 + 812 + 50 + 1).SetValue<int>(_DoomsdayHeistCut1.GetState());
-                ScriptGlobal(1962078 + 812 + 50 + 2).SetValue<int>(_DoomsdayHeistCut2.GetState());
-                ScriptGlobal(1962078 + 812 + 50 + 3).SetValue<int>(_DoomsdayHeistCut3.GetState());
-                ScriptGlobal(1962078 + 812 + 50 + 4).SetValue<int>(_DoomsdayHeistCut4.GetState());
+				auto base = ScriptGlobal(1962078).At(812).At(50);
+
+				*base.At(1).As<int*>() = _DoomsdayHeistCut1.GetState();
+				*base.At(2).As<int*>() = _DoomsdayHeistCut2.GetState();
+				*base.At(3).As<int*>() = _DoomsdayHeistCut3.GetState();
+				*base.At(4).As<int*>() = _DoomsdayHeistCut4.GetState();
 			}
 		};
 
@@ -34,9 +36,12 @@ namespace YimMenu::Features
 
 			virtual void OnCall() override
 			{
-				ScriptGlobal(1882925 + 1 + (1 * 149) + 43 + 1 + 4 + 8).SetValue<int>(1);
-                ScriptGlobal(1882925 + 1 + (2 * 149) + 43 + 2 + 4 + 8).SetValue<int>(1);
-				ScriptGlobal(1882925 + 1 + (3 * 149) + 43 + 3 + 4 + 8).SetValue<int>(1);
+				auto base = ScriptGlobal(1882925);
+
+				*base.At(0, 149).At(43).At(0).At(4).At(8).As<int*>() = 1;
+				*base.At(1, 149).At(43).At(1).At(4).At(8).As<int*>() = 1;
+                *base.At(2, 149).At(43).At(2).At(4).At(8).As<int*>() = 1;
+				*base.At(3, 149).At(43).At(3).At(4).At(8).As<int*>() = 1;
 			}
 		};
 
@@ -75,7 +80,7 @@ namespace YimMenu::Features
 
 				ScriptMgr::Yield(500ms);
 
-				ScriptLocal("gb_gang_ops_planning"_J, 207).SetValue<int>(6); // Reload planning screen
+				*ScriptLocal("gb_gang_ops_planning"_J, 207).As<int*>() = 6; // Reload planning screen
 			}
 		};
 
@@ -84,10 +89,10 @@ namespace YimMenu::Features
 			using Command::Command;
 
 			virtual void OnCall() override
-			{				
-				ScriptLocal("fm_mission_controller"_J, 1538).SetValue<int>(3);
-				ScriptLocal("fm_mission_controller"_J, 1569).SetValue<int>(2);
-				ScriptLocal("fm_mission_controller"_J, 1294 + 135).SetValue<int>(3);
+			{
+				*ScriptLocal("fm_mission_controller"_J, 1538).As<int*>() = 3;
+				*ScriptLocal("fm_mission_controller"_J, 1569).As<int*>() = 2;
+				*ScriptLocal("fm_mission_controller"_J, 1294).At(135).As<int*>() = 3;
 			}
 		};
 
@@ -100,12 +105,12 @@ namespace YimMenu::Features
 				Scripts::ForceScriptHost(Scripts::FindScriptThread("fm_mission_controller"_J));
 				ScriptMgr::Yield(500ms);
 
-				ScriptLocal("fm_mission_controller"_J, 20387 + 1725 + 1).SetValue<int>(80);
-				ScriptLocal("fm_mission_controller"_J, 20387).SetValue<int>(12);
-				ScriptLocal("fm_mission_controller"_J, 29006 + 1).SetValue<int>(99999);
-				ScriptLocal("fm_mission_controller"_J, 32462 + 1 + 68).SetValue<int>(99999);
+				*ScriptLocal("fm_mission_controller"_J, 20387).At(1725).At(1).As<int*>() = 80;
+				*ScriptLocal("fm_mission_controller"_J, 20387).As<int*>() = 12;
+				*ScriptLocal("fm_mission_controller"_J, 29006).At(1).As<int*>() = 99999;
+				*ScriptLocal("fm_mission_controller"_J, 32462).At(1).At(68).As<int*>() = 99999;
 
-				// TODO: find a way og getting current heist info so that InstantFinishAct3 can be implemented here conditionally.
+				// TODO: find a way of getting current heist info so that InstantFinishAct3 can be implemented here conditionally.
 			}
 		};
 
@@ -117,12 +122,12 @@ namespace YimMenu::Features
 			{
 				Scripts::ForceScriptHost(Scripts::FindScriptThread("fm_mission_controller"_J));
 				ScriptMgr::Yield(500ms);
-				
-				ScriptLocal("fm_mission_controller"_J, 20387).SetValue<int>(12);
-				ScriptLocal("fm_mission_controller"_J, 20387 + 1740 + 1).SetValue<int>(150);
-				ScriptLocal("fm_mission_controller"_J, 20387 + 1062).SetValue<int>(5);
-				ScriptLocal("fm_mission_controller"_J, 29006 + 1).SetValue<int>(99999);
-				ScriptLocal("fm_mission_controller"_J, 32462 + 1 + 68).SetValue<int>(99999);
+
+				*ScriptLocal("fm_mission_controller"_J, 20387).As<int*>() = 12;
+				*ScriptLocal("fm_mission_controller"_J, 20387).At(1740).At(1).As<int*>() = 150;
+				*ScriptLocal("fm_mission_controller"_J, 20387).At(1062).As<int*>() = 5;
+				*ScriptLocal("fm_mission_controller"_J, 29006).At(1).As<int*>() = 99999;
+				*ScriptLocal("fm_mission_controller"_J, 32462).At(1).At(68).As<int*>() = 99999;
 			}
 		};
 
@@ -131,6 +136,6 @@ namespace YimMenu::Features
 		static Setup _DoomsdayHeistSetup{"doomsdayheistsetup", "Setup", "Sets up doomsday heist"};
 		static SkipHacking _DoomsdayHeistSkipHacking{"doomsdayheistskiphacking", "Skip Hacking", "Skips hacking process"};
 		static InstantFinish _DoomsdayHeistInstantFinish{"doomsdayheistinstantfinish", "Instant Finish", "Instantly passes the heist"};
-		static InstantFinishAct3 _DoomsdayHeistInstantFinishAct3{"doomsdayheistinstantfinishact3", "Instant Finish (Act: III)", "Instantly passes the heist"};
+		static InstantFinishAct3 _DoomsdayHeistInstantFinishAct3{"doomsdayheistinstantfinishact3", "Instant Finish (Act: III)", "Instantly passes Doomsday Scenario Act: III"};
 	}
 }
