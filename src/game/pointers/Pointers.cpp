@@ -308,6 +308,32 @@ namespace YimMenu
 			NetworkTime = ptr.Add(2).Rip().As<std::uint32_t*>();
 		});
 
+		constexpr auto gameTimerPtrn = Pattern<"3B 2D ? ? ? ? 76">("GameTimer");
+		scanner.Add(gameTimerPtrn, [this](PointerCalculator ptr) {
+			GameTimer = ptr.Add(2).Rip().As<std::uint32_t*>();
+		});
+
+		constexpr auto formatIntCaller1Ptrn = Pattern<"48 89 35 ? ? ? ? 48 8B 74 24">("FormatIntCaller1");
+		scanner.Add(formatIntCaller1Ptrn, [this](PointerCalculator ptr) {
+			FormatIntCaller1 = ptr.Add(0x5D).As<PVOID>();
+		});
+
+		constexpr auto formatIntCaller2Ptrn = Pattern<"48 B8 20 73 69 7A 65 3D 27 32 48 89 84 24">("FormatIntCaller2");
+		scanner.Add(formatIntCaller2Ptrn, [this](PointerCalculator ptr) {
+			FormatIntCaller2 = ptr.Sub(0x11).As<PVOID>();
+		});
+
+		constexpr auto shouldTargetEntityPatchPtrn = Pattern<"F6 80 A9 14 00 00 01">("ShouldNotTargetEntityPatch");
+		scanner.Add(shouldTargetEntityPatchPtrn, [this](PointerCalculator ptr) {
+			ShouldNotTargetEntityPatch = BytePatches::Add(ptr.Sub(0x53).As<void*>(), std::vector<std::uint8_t>{0xB0, 0x00, 0xC3});
+		});
+
+		// TODO: this has been inlined a lot in Enhanced
+		constexpr auto getAssistedAimTypePatchPtrn = Pattern<"48 85 C0 74 15 8B 80 ? ? ? ? BE 03">("GetAssistedAimTypePatch");
+		scanner.Add(getAssistedAimTypePatchPtrn, [this](PointerCalculator ptr) {
+			GetAssistedAimTypePatch = BytePatches::Add(ptr.Sub(0xE).As<void*>(), std::vector<std::uint8_t>{0xB0, 0x01, 0xC3});
+		});
+
 		if (!scanner.Scan())
 		{
 			LOG(FATAL) << "Some patterns could not be found, unloading.";
@@ -357,7 +383,7 @@ namespace YimMenu
 			BytePatches::Add(ptr.As<void*>(), std::vector<std::uint8_t>{0xB0, 0x01})->Apply(); 
 		});
 
-		constexpr auto getAvatarsPtrn = Pattern<"89 4B 7C 48 8B CB E8 ? ? ? ? 84 C0">("GetAvatars");
+		constexpr auto getAvatarsPtrn = Pattern<"89 4E 7C 48 8B CE E8 ? ? ? ? 84 C0">("GetAvatars");
 		scanner.Add(getAvatarsPtrn, [this](PointerCalculator ptr) {
 			GetAvatars = ptr.Add(6).Add(1).Rip().As<Functions::GetAvatars>();
 		});
