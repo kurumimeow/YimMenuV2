@@ -80,29 +80,29 @@ namespace YimMenu::Features
 			virtual void OnCall() override
 			{
 				Stats::SetInt("MPX_H4CNF_TARGET", _CayoPericoHeistPrimaryTarget.GetState()); // Primary target
-                Stats::SetInt("MPX_H4LOOT_CASH_I", 2359448);
-                Stats::SetInt("MPX_H4LOOT_CASH_I_SCOPED", 2359448);
+				Stats::SetInt("MPX_H4LOOT_CASH_I", 16711680);
+				Stats::SetInt("MPX_H4LOOT_CASH_I_SCOPED", 16711680);
                 Stats::SetInt("MPX_H4LOOT_CASH_C", 0);
                 Stats::SetInt("MPX_H4LOOT_CASH_C_SCOPED", 0);
-                Stats::SetInt("MPX_H4LOOT_COKE_I", 4901222);
-                Stats::SetInt("MPX_H4LOOT_COKE_I_SCOPED", 4901222);
+                Stats::SetInt("MPX_H4LOOT_COKE_I", 255);
+                Stats::SetInt("MPX_H4LOOT_COKE_I_SCOPED", 255);
                 Stats::SetInt("MPX_H4LOOT_COKE_C", 0);
                 Stats::SetInt("MPX_H4LOOT_COKE_C_SCOPED", 0);
                 Stats::SetInt("MPX_H4LOOT_GOLD_I", 0);
                 Stats::SetInt("MPX_H4LOOT_GOLD_I_SCOPED", 0);
                 Stats::SetInt("MPX_H4LOOT_GOLD_C", 255);
                 Stats::SetInt("MPX_H4LOOT_GOLD_C_SCOPED", 255);
-                Stats::SetInt("MPX_H4LOOT_WEED_I", 0);
-                Stats::SetInt("MPX_H4LOOT_WEED_I_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_WEED_I", 65280);
+				Stats::SetInt("MPX_H4LOOT_WEED_I_SCOPED", 65280);
                 Stats::SetInt("MPX_H4LOOT_WEED_C", 0);
                 Stats::SetInt("MPX_H4LOOT_WEED_C_SCOPED", 0);
                 Stats::SetInt("MPX_H4LOOT_PAINT", 127);
                 Stats::SetInt("MPX_H4LOOT_PAINT_SCOPED", 127);
-                Stats::SetInt("MPX_H4LOOT_CASH_V", 599431);
-                Stats::SetInt("MPX_H4LOOT_COKE_V", 1198863);
-                Stats::SetInt("MPX_H4LOOT_GOLD_V", 1598484);
-                Stats::SetInt("MPX_H4LOOT_PAINT_V", 1198863);
-				Stats::SetInt("MPX_H4LOOT_WEED_V", 0);
+                Stats::SetInt("MPX_H4LOOT_CASH_V", 83250);
+                Stats::SetInt("MPX_H4LOOT_COKE_V", 202500);
+                Stats::SetInt("MPX_H4LOOT_GOLD_V", 333333);
+				Stats::SetInt("MPX_H4LOOT_WEED_V", 135000);
+				Stats::SetInt("MPX_H4LOOT_PAINT_V", 180000);
 				Stats::SetInt("MPX_H4_PROGRESS", _CayoPericoHeistDifficulty.GetState()); // Difficulty
                 Stats::SetInt("MPX_H4CNF_BS_GEN", 262143);
                 Stats::SetInt("MPX_H4CNF_BS_ENTR", 63);
