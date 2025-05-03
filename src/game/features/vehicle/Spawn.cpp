@@ -14,13 +14,14 @@ namespace YimMenu::Features
 	static BoolCommand _UseCustomLicensePlate{"usecustomlicenseplate", "Use custom license plate", "Use a custom license plate for the vehicle", false};
 	static StringCommand _CustomLicensePlate{"customlicenseplate", "Custom license plate", "The custom license plate for the vehicle"};
 
-	class SpawnVehicle : public Command {
+	class SpawnVehicle : public Command
+	{
 		using Command::Command;
 
 		virtual void OnCall() override
 		{
 			auto model = _VehicleModelname.GetString();
-			
+
 			if (!model.length())
 			{
 				Notifications::Show("Spawn Vehicle", "No model name provided.", NotificationType::Error);
@@ -58,7 +59,7 @@ namespace YimMenu::Features
 					else if (licensePlate.length() > 0)
 					{
 						veh.SetPlateText(licensePlate);
-					}				
+					}
 				}
 			}
 			else
@@ -68,5 +69,36 @@ namespace YimMenu::Features
 		}
 	};
 
+	class SetLicensePlate : public Command
+	{
+		using Command::Command;
+
+		virtual void OnCall() override
+		{
+			auto veh = Self::GetVehicle();
+
+			if (!veh)
+			{
+				Notifications::Show("License Plate", "No vehicle found.", NotificationType::Error);
+				return;
+			}
+
+			std::string licensePlate = _CustomLicensePlate.GetString();
+			if (licensePlate.length() == 0)
+			{
+				Notifications::Show("License Plate", "No license plate provided.", NotificationType::Error);
+			}
+			else if (licensePlate.length() > 8)
+			{
+				Notifications::Show("License Plate", "License plate must be 8 characters or less.", NotificationType::Error);
+			}
+			else if (licensePlate.length() > 0)
+			{
+				veh.SetPlateText(licensePlate);
+			}
+		}
+	};
+
 	static SpawnVehicle _SpawnVehicle{"spawnvehicle", "Spawn Vehicle", "Spawns a vehicle at your current location"};
+	static SetLicensePlate _SetLicensePlate{"setlicenseplate", "Set License Plate", "Sets the license plate of the vehicle you are in."};
 }

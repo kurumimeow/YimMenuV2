@@ -32,14 +32,16 @@ namespace YimMenu::Submenus
 		main->AddItem(std::move(bringOpts));
 		main->AddItem(std::move(weatherOpts));
 
-		auto spawnGroup = std::make_shared<Group>("Vehicle");
-		auto modsGroup  = std::make_shared<Group>("Modifications");	
+		auto spawnGroup = std::make_shared<Group>("Vehicle", 8);
+		auto modsGroup  = std::make_shared<Group>("Modifications");
 
 		spawnGroup->AddItem(std::make_shared<StringCommandItem>("vehmodelname"_J));
 		spawnGroup->AddItem(std::make_shared<BoolCommandItem>("spawninvehicle"_J));
 		spawnGroup->AddItem(std::make_shared<BoolCommandItem>("spawnupgraded"_J));
 		spawnGroup->AddItem(std::make_shared<BoolCommandItem>("usecustomlicenseplate"_J));
 		spawnGroup->AddItem(std::make_shared<ConditionalItem>("usecustomlicenseplate"_J, std::make_shared<StringCommandItem>("customlicenseplate"_J)));
+		spawnGroup->AddItem(std::make_shared<ImGuiItem>([] { ImGui::SameLine(); }));
+		spawnGroup->AddItem(std::make_shared<ConditionalItem>("usecustomlicenseplate"_J, std::make_shared<CommandItem>("setlicenseplate"_J, "Set##licenseplate")));
 		spawnGroup->AddItem(std::make_shared<CommandItem>("spawnvehicle"_J));
 
 		modsGroup->AddItem(std::make_shared<BoolCommandItem>("lsccustomsbypass"_J));

@@ -135,7 +135,6 @@ namespace YimMenu
 	class HotkeySetter : public UIItem
 	{
 	public:
-
 		explicit HotkeySetter(joaat_t);
 		void Draw() override;
 
@@ -146,7 +145,7 @@ namespace YimMenu
 	class Group : public UIItem
 	{
 	public:
-		explicit Group(const std::string& name, int items_per_row = 7);
+		explicit Group(const std::string& name, int items_per_column = 7);
 		void Draw() override;
 		
 		void AddItem(std::shared_ptr<UIItem>&& item)
@@ -156,7 +155,7 @@ namespace YimMenu
 
 	private:
 		std::string m_Name;
-		int m_ItemsPerRow;
+		int m_ItemsPerColumn;
 		std::vector<std::shared_ptr<UIItem>> m_Items;
 	};
 
