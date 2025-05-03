@@ -100,5 +100,5 @@ namespace YimMenu::Features
 	};
 
 	static SpawnVehicle _SpawnVehicle{"spawnvehicle", "Spawn Vehicle", "Spawns a vehicle at your current location"};
-	static SetLicensePlate _SetLicensePlate{"setlicenseplate", "Set License Plate", "Sets the license plate of the vehicle you are in."};
+	static SetLicensePlate _SetLicensePlate{"setlicenseplate", "Set License Plate", "Sets the license plate of the vehicle you are in"};
 }
