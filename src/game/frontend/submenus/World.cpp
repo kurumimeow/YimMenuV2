@@ -40,7 +40,7 @@ namespace YimMenu::Submenus
 		spawnGroup->AddItem(std::make_shared<BoolCommandItem>("spawnupgraded"_J));
 		spawnGroup->AddItem(std::make_shared<BoolCommandItem>("usecustomlicenseplate"_J));
 		spawnGroup->AddItem(std::make_shared<ConditionalItem>("usecustomlicenseplate"_J, std::make_shared<StringCommandItem>("customlicenseplate"_J)));
-		spawnGroup->AddItem(std::make_shared<ImGuiItem>([] { ImGui::SameLine(); }));
+		spawnGroup->AddItem(std::make_shared<ConditionalItem>("usecustomlicenseplate"_J, std::make_shared<ImGuiItem>([] { ImGui::SameLine(); })));
 		spawnGroup->AddItem(std::make_shared<ConditionalItem>("usecustomlicenseplate"_J, std::make_shared<CommandItem>("setlicenseplate"_J, "Set##licenseplate")));
 		spawnGroup->AddItem(std::make_shared<CommandItem>("spawnvehicle"_J));
 
