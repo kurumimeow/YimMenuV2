@@ -198,6 +198,22 @@ namespace YimMenu
 		std::optional<std::string> m_CurrentInput = std::nullopt;
 	};
 
+	class TabBarItem : public UIItem
+	{
+	public:
+		explicit TabBarItem(const std::string& id);
+		void Draw() override;
+
+		void AddItem(std::shared_ptr<UIItem>&& tab)
+		{
+			m_Tabs.push_back(std::move(tab));
+		}
+
+	private:
+		std::string m_Id;
+		std::vector<std::shared_ptr<UIItem>> m_Tabs;
+	};
+
 	class TabItem : public UIItem
 	{
 	public:
@@ -212,5 +228,16 @@ namespace YimMenu
 	private:
 		std::string m_Name;
 		std::vector<std::shared_ptr<UIItem>> m_Items;
+	};
+
+	class SameLineItem : public UIItem
+	{
+	public:
+		explicit SameLineItem(std::shared_ptr<UIItem> wrapped);
+		void Draw() override;
+		bool CanDraw() override;
+
+	private:
+		std::shared_ptr<UIItem> m_Wrapped;
 	};
 }
