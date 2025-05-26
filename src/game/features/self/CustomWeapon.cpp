@@ -27,12 +27,13 @@ namespace YimMenu::Features
 			PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 
 		Entity m_Entity{nullptr};
+		bool isCustomWeaponActionAllowed = !_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2);
 
 		switch (selectedWeaponType)
 		{
 		case CustomWeapons::CAGE_GUN:
 		{
-			if (!_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2))
+			if (isCustomWeaponActionAllowed)
 			{
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
@@ -63,7 +64,7 @@ namespace YimMenu::Features
 		}
 		case CustomWeapons::DELETE_GUN:
 		{
-			if (!_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2))
+			if (isCustomWeaponActionAllowed)
 			{
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
@@ -152,7 +153,7 @@ namespace YimMenu::Features
 				}
 			};
 
-			if ((!_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2)) && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+			if (isCustomWeaponActionAllowed && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
 				location = Self::GetPed().GetPosition();
 
@@ -192,6 +193,7 @@ namespace YimMenu::Features
 						}
 					}
 				}
+				
 				if (entities.size() > 0)
 				{
 					for (const auto& entity : entities)
@@ -221,11 +223,11 @@ namespace YimMenu::Features
 
 				Notifications::Show("Custom Weapon", "Entity is released.", NotificationType::Success);
 			}
+			break;
 		}
-		break;
 		case CustomWeapons::STEAL_VEHICLE_GUN:
 		{
-			if (!_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2))
+			if (isCustomWeaponActionAllowed)
 			{
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
@@ -263,7 +265,7 @@ namespace YimMenu::Features
 		}
 		case CustomWeapons::REPAIR_GUN:
 		{
-			if (!_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2))
+			if (isCustomWeaponActionAllowed)
 			{
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
@@ -293,7 +295,7 @@ namespace YimMenu::Features
 		{
 			static TIMER vehicleGunTimer;
 
-			if (!_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2))
+			if (isCustomWeaponActionAllowed)
 			{
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
@@ -349,7 +351,7 @@ namespace YimMenu::Features
 		}
 		case CustomWeapons::TELEPORT_GUN:
 		{
-			if (!_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2))
+			if (isCustomWeaponActionAllowed)
 			{
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
@@ -385,7 +387,7 @@ namespace YimMenu::Features
 				color = _PaintGunColor.GetState();
 			}
 
-			if (!_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2))
+			if (isCustomWeaponActionAllowed)
 			{
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
