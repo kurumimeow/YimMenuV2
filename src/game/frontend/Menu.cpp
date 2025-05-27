@@ -44,7 +44,7 @@ namespace YimMenu
 			    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImU32(ImColor(15, 15, 15)));
 
 			    ImGui::SetNextWindowSize(ImVec2((*Pointers.ScreenResX / 2.5), (*Pointers.ScreenResY / 2.5)), ImGuiCond_Once);
-			    if (ImGui::Begin("YimMenuV2", nullptr, ImGuiWindowFlags_NoDecoration))
+			    if (ImGui::Begin("YimMenuV2", nullptr, ImGuiWindowFlags_NoDecoration & ~(ImGuiWindowFlags_NoResize)))
 			    {
 					// TODO: should we just remove unload?
 				    ImGui::BeginDisabled(*Pointers.IsSessionStarted || ModuleMgr.IsManualMapped());
