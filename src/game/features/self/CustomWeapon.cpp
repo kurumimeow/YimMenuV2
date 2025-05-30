@@ -27,7 +27,7 @@ namespace YimMenu::Features
 			PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 
 		Entity m_Entity{nullptr};
-		bool isCustomWeaponActionAllowed = !_CustomWeaponEnabledOnWeponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2);
+		bool isCustomWeaponActionAllowed = !_CustomWeaponEnabledOnWeaponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2);
 
 		switch (selectedWeaponType)
 		{
@@ -379,7 +379,7 @@ namespace YimMenu::Features
 
 			if (_PaintGunRainbowColorEnabled.GetState())
 			{
-				RainbowPaint(paintGunColor, _PaintGunRainbowColorSpeed.GetState(), static_cast<RainbowPaintType>(_CustomWeaponRainbowColorType.GetState()));
+				RainbowPaint(paintGunColor, _PaintGunRainbowColorSpeed.GetState(), static_cast<RainbowPaintType>(_PaintGunRainbowColorType.GetState()));
 				color = ImVec4(paintGunColor.x / 255.0f, paintGunColor.y / 255.0f, paintGunColor.z / 255.0f, 1.f);
 			}
 			else

@@ -76,13 +76,13 @@ namespace YimMenu::Submenus
 		weaponsAimbotGroup->AddItem(std::make_shared<ConditionalItem>("aimbot"_J, std::make_shared<BoolCommandItem>("aimbottargetdrivers"_J)));
 
 		auto customWeapons = std::make_shared<Group>("", 8);
-		customWeapons->AddItem(std::make_shared<BoolCommandItem>("customweaponenabledonweponout"_J));
+		customWeapons->AddItem(std::make_shared<BoolCommandItem>("customweaponenabledonweaponout"_J));
 		customWeapons->AddItem(std::make_shared<ListCommandItem>("customweapontype"_J));
 		customWeapons->AddItem(std::make_shared<ConditionalItem>("isgravitygunenabled"_J, std::make_shared<SameLineItem>(std::make_shared<BoolCommandItem>("gravitygunlaunchonrelease"_J))));
 		customWeapons->AddItem(std::make_shared<ConditionalItem>("isvehiclegunenabled"_J, std::make_shared<SameLineItem>(std::make_shared<StringCommandItem>("vehiclegunmodel"_J))));
 		customWeapons->AddItem(std::make_shared<ConditionalItem>("ispaintgunenabled"_J, std::make_shared<ConditionalItem>("paintgunrainbowcolorenabled"_J, std::make_shared<SameLineItem>(std::make_shared<ColorCommandItem>("paintguncolor"_J)), true)));
 		customWeapons->AddItem(std::make_shared<ConditionalItem>("ispaintgunenabled"_J, std::make_shared<BoolCommandItem>("paintgunrainbowcolorenabled"_J)));
-		customWeapons->AddItem(std::make_shared<ConditionalItem>("ispaintgunenabled"_J, std::make_shared<ConditionalItem>("paintgunrainbowcolorenabled"_J, std::make_shared<ListCommandItem>("customweaponrainbowcolortype"_J))));
+		customWeapons->AddItem(std::make_shared<ConditionalItem>("ispaintgunenabled"_J, std::make_shared<ConditionalItem>("paintgunrainbowcolorenabled"_J, std::make_shared<ListCommandItem>("paintgunrainbowcolortype"_J))));
 		customWeapons->AddItem(std::make_shared<ConditionalItem>("ispaintgunenabled"_J, std::make_shared<ConditionalItem>("paintgunrainbowcolorenabled"_J, std::make_shared<SameLineItem>(std::make_shared<IntCommandItem>("paintgunrainbowcolorspeed"_J)))));
 
 		customWeaponsGroup->AddItem(std::make_shared<BoolCommandItem>("customweapon"_J));

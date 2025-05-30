@@ -113,11 +113,11 @@ namespace YimMenu::Features
 	};
 	static ListCommand _CustomWeaponType{"customweapontype", "Weapon Type", "The type of custom weapon to use", g_CustomWeaponTypes, static_cast<int>(CustomWeapons::CAGE_GUN)};
 
-	static std::vector<std::pair<int, const char*>> g_CustomWeaponRainbowColorType = {
+	static std::vector<std::pair<int, const char*>> g_PaintGunRainbowColorType = {
 		{static_cast<int>(RainbowPaintType::Fade), "Fade"},
 		{static_cast<int>(RainbowPaintType::Spasm), "Spasm"}
 	};
-	static ListCommand _CustomWeaponRainbowColorType{"customweaponrainbowcolortype", "Rainbow Color Type", "Type of rainbow color for paint gun", g_CustomWeaponRainbowColorType, static_cast<int>(RainbowPaintType::Fade)};
+	static ListCommand _PaintGunRainbowColorType{"paintgunrainbowcolortype", "Rainbow Color Type", "Type of rainbow color for paint gun", g_PaintGunRainbowColorType, static_cast<int>(RainbowPaintType::Fade)};
 
 	class CustomWeapon : public LoopedCommand
 	{
@@ -127,11 +127,11 @@ namespace YimMenu::Features
 	};
 
 	static CustomWeapon _CustomWeapon{"customweapon", "Custom Weapon", "Modifies weapon ability"};
-	static BoolCommand _CustomWeaponEnabledOnWeponOut{"customweaponenabledonweponout", "Enable Only If Weapon Is Out", "Enable custom weapon only when weapon is out", true};
+	static BoolCommand _CustomWeaponEnabledOnWeaponOut{"customweaponenabledonweaponout", "Enable Only if Weapon is Out", "Enable custom weapon only when weapon is out", true};
 	static BoolCommand _IsGravityGunEnabled{"isgravitygunenabled", "Is Gravity Gun Enabled", "Returns true if gravity gun is enabled", false};
 	static BoolCommand _IsVehicleGunEnabled{"isvehiclegunenabled", "Is Vehicle Gun Enabled", "Returns true if vehicle gun is enabled", false};
 	static BoolCommand _IsPaintGunEnabled{"ispaintgunenabled", "Is Paint Gun Enabled", "Returns true if paint gun is enabled", false};
-	static BoolCommand _GravityGunLaunchOnRelease{"gravitygunlaunchonrelease", "Launch on Release", "Launch entity on release", false};
+	static BoolCommand _GravityGunLaunchOnRelease{"gravitygunlaunchonrelease", "Launch Entity on Release", "Launch entity on release", false};
 	static StringCommand _VehicleGunModel{"vehiclegunmodel", "Vehicle Model", "Model of the vehicle"};
 	static ColorCommand _PaintGunColor{"paintguncolor", "Paint Gun Color", "Color of the paint gun"};
 	static BoolCommand _PaintGunRainbowColorEnabled{"paintgunrainbowcolorenabled", "Rainbow Color", "Use rainbow color for paint gun", false};
