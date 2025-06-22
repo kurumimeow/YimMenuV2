@@ -110,7 +110,7 @@ namespace YimMenu::Features
 		}
 		case CustomWeapons::GRAVITY_GUN:
 		{
-			static std::vector<Entity> entities = {};
+			static std::vector<Entity> entities;
 			static Vector3 location;
 			static Vector3 entityPos;
 			static float distance;
@@ -234,31 +234,33 @@ namespace YimMenu::Features
 				{
 					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 					{
-						if (RayCast(m_Entity))
-						{
-							auto entityHandle = m_Entity.GetHandle();
-
-							if (m_Entity.IsVehicle())
+						FiberPool::Push([=]() mutable {
+							if (RayCast(m_Entity))
 							{
-								for (size_t i = 0; i < 8 && !m_Entity.As<Vehicle>().IsSeatFree(-1); i++)
+								auto entityHandle = m_Entity.GetHandle();
+
+								if (m_Entity.IsVehicle())
 								{
-									const auto ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(entityHandle, -1, 0);
-									TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
+									for (size_t i = 0; i < 8 && !m_Entity.As<Vehicle>().IsSeatFree(-1); i++)
+									{
+										const auto ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(entityHandle, -1, 0);
+										TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
 
-									ScriptMgr::Yield(100ms);
+										ScriptMgr::Yield(100ms);
+									}
+
+									Self::GetPed().SetInVehicle(m_Entity.As<Vehicle>(), -1);
 								}
-
-								Self::GetPed().SetInVehicle(m_Entity.As<Vehicle>(), -1);
+								else
+								{
+									Notifications::Show("Custom Weapon", "Invalid vehicle.", NotificationType::Warning);
+								}
 							}
 							else
 							{
-								Notifications::Show("Custom Weapon", "Invalid vehicle.", NotificationType::Warning);
+								Notifications::Show("Custom Weapon", "No entity found.", NotificationType::Warning);
 							}
-						}
-						else
-						{
-							Notifications::Show("Custom Weapon", "No entity found.", NotificationType::Warning);
-						}
+						});
 					}
 				}
 			}

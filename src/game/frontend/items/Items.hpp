@@ -237,15 +237,4 @@ namespace YimMenu
 		std::string m_Name;
 		std::vector<std::shared_ptr<UIItem>> m_Items;
 	};
-
-	class SameLineItem : public UIItem
-	{
-	public:
-		explicit SameLineItem(std::shared_ptr<UIItem> wrapped);
-		void Draw() override;
-		bool CanDraw() override;
-
-	private:
-		std::shared_ptr<UIItem> m_Wrapped;
-	};
 }
