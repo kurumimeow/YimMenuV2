@@ -6,7 +6,8 @@
 #include "game/backend/NativeHooks.hpp"
 #include "game/gta/Natives.hpp"
 #include "types/rage/gameSkeleton.hpp"
-
+#include "types/anticheat/CAnticheatContext.hpp"
+#include "types/game_files/CGameDataHash.hpp"
 
 using FnGetVersion = int (*)();
 using FnLocalSaves = bool (*)();
@@ -33,6 +34,21 @@ namespace YimMenu
 		return NativeInvoker::GetNativeHandler(NativeIndex::NET_GAMESERVER_BEGIN_SERVICE)(ctx);
 	}
 
+	static void NopGameSkeletonElement(rage::gameSkeletonUpdateElement* element)
+	{
+		// TODO: small memory leak
+		// Hey rockstar if you keep up with this I'll make you integrity check everything until you can't anymore, please grow a brain and realize that this is futile
+		// and kills performance if you're the host
+		auto vtable = *reinterpret_cast<void***>(element);
+		if (vtable[1] == Pointers.Nullsub)
+			return; // already nopped
+
+		auto new_vtable = new void*[3];
+		memcpy(new_vtable, vtable, sizeof(void*) * 3);
+		new_vtable[1] = Pointers.Nullsub;
+		*reinterpret_cast<void***>(element) = new_vtable;
+	}
+
 	static void DefuseSigscanner()
 	{
 		bool patched = false;
@@ -52,19 +68,12 @@ namespace YimMenu
 						continue;
 					patched = true;
 
-					reinterpret_cast<rage::gameSkeletonUpdateElement*>(group_child_node)->m_Function = reinterpret_cast<void (*)()>(Pointers.Nullsub);
+					NopGameSkeletonElement(reinterpret_cast<rage::gameSkeletonUpdateElement*>(group_child_node));
 				}
 				break;
 			}
 		}
 
-		for (rage::gameSkeletonData& i : Pointers.GameSkeleton->m_SysData)
-		{
-			if (i.m_Hash != 0xA0F39FB6 && i.m_Hash != "TamperActions"_J)
-				continue;
-			i.m_InitFunc = Pointers.Nullsub;
-			i.m_ShutdownFunc = Pointers.Nullsub;
-		}
 
 		if (patched)
 		{
@@ -76,9 +85,26 @@ namespace YimMenu
 		}
 	}
 
+	void AnticheatBypass::RunOnStartupImpl()
+	{
+		bool loaded_late = false;
+
+		if (!*Pointers.AnticheatInitializedHash)
+		{
+			*Pointers.AnticheatInitializedHash = new rage::Obf32; // this doesn't get freed so we don't have to use the game allocator
+			(*Pointers.AnticheatInitializedHash)->setData(0x124EA49D);
+		}
+		else
+		{
+			(*Pointers.AnticheatInitializedHash)->setData(0x124EA49D);
+			loaded_late = true;
+		}
+	}
+
 	void AnticheatBypass::RunScriptImpl()
 	{
 		DefuseSigscanner();
+		
 		NativeHooks::AddHook("shop_controller"_J, NativeIndex::NET_GAMESERVER_BEGIN_SERVICE, &TransactionHook);
 
 		m_IsFSLLoaded = CheckForFSL();
@@ -122,12 +148,12 @@ namespace YimMenu
 		if (m_BattlEyeRunning)
 			LOGF(WARNING, "If you are not running an actual BattlEye bypass, exit the game immediately and ensure that BE is properly disabled");
 
-		if (!m_FSLProvidesBEBypass)
+		if (!m_FSLProvidesBEBypass && !m_BattlEyeRunning)
 			Pointers.BattlEyeStatusUpdatePatch->Apply();
 
 		while (true)
 		{
-			if (!m_FSLProvidesBEBypass)
+			if (!m_FSLProvidesBEBypass && !m_BattlEyeRunning)
 			{
 				*Pointers.BERestartStatus = 0;
 				*Pointers.NeedsBERestart = false;

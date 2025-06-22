@@ -4,7 +4,8 @@
 namespace YimMenu::Submenus
 {
 	World::World() :
-	    Submenu::Submenu("World")
+		#define ICON_FA_GLOBE "\xef\x82\xac"
+	    Submenu::Submenu("World", ICON_FA_GLOBE)
 	{
 		auto main = std::make_shared<Category>("Main");
 		auto spawnersGroup = std::make_shared<Category>("Spawners");
@@ -41,6 +42,7 @@ namespace YimMenu::Submenus
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("pedsignore"_J));
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("PedRiotMode"_J));
 		otherOpts->AddItem(std::make_shared<BoolCommandItem>("CopsDispatch"_J));
+		otherOpts->AddItem(std::make_shared<BoolCommandItem>("enablecreatordevmode"_J));
 
 		main->AddItem(std::move(killPeds));
 		main->AddItem(std::move(deleteOpts));

@@ -1,30 +1,30 @@
 #pragma once
 #include "types.hpp"
 
-#define REGISTER_SCRIPT_EVENT(classType, indexType)                  \
-	constexpr static auto EVENT_INDEX = ScriptEventIndex::indexType; \
-	classType()                                                      \
-	{                                                                \
-		memset(this, 0, sizeof(classType));                          \
-		EventIndex = static_cast<int>(EVENT_INDEX);                  \
-	}                                                                \
-	classType(const classType& other)                                \
-	{                                                                \
-		memcpy(this, &other, sizeof(classType));                     \
-		EventIndex = static_cast<int>(EVENT_INDEX);                  \
-	}                                                                \
-	static constexpr size_t GetSize()                                \
-	{                                                                \
-		return sizeof(classType);                                    \
-	}                                                                \
-	inline void Send()                                               \
-	{                                                                \
-		SendImpl(GetSize());                                         \
-	}                                                                \
-	inline void Send(int player)                                     \
-	{                                                                \
-		SetPlayer(player);                                           \
-		SendImpl(GetSize());                                         \
+#define REGISTER_SCRIPT_EVENT(classType, indexType)                            \
+	constexpr static auto EVENT_INDEX = ScriptEventIndex::indexType;           \
+	classType()                                                                \
+	{                                                                          \
+		memset(reinterpret_cast<classType*>(this), 0, sizeof(classType));      \
+		EventIndex = static_cast<int>(EVENT_INDEX);                            \
+	}                                                                          \
+	classType(const classType& other)                                          \
+	{                                                                          \
+		memcpy(reinterpret_cast<classType*>(this), &other, sizeof(classType)); \
+		EventIndex = static_cast<int>(EVENT_INDEX);                            \
+	}                                                                          \
+	static constexpr size_t GetSize()                                          \
+	{                                                                          \
+		return sizeof(classType);                                              \
+	}                                                                          \
+	inline void Send()                                                         \
+	{                                                                          \
+		SendImpl(GetSize());                                                   \
+	}                                                                          \
+	inline void Send(int player)                                               \
+	{                                                                          \
+		SetPlayer(player);                                                     \
+		SendImpl(GetSize());                                                   \
 	}
 
 // I doubt rockstar would cycle this again, but best to keep this, just in case
@@ -217,6 +217,7 @@ struct SCRIPT_EVENT_COLLECT_COLLECTABLE : public SCRIPT_EVENT
 		Tagging = 19,
 		SprayCans = 20,
 		Yuanbao = 21,
+		SmokeOnTheWater = 22
 	};
 
 	REGISTER_SCRIPT_EVENT(SCRIPT_EVENT_COLLECT_COLLECTABLE, CollectCollectable);

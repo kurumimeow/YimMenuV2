@@ -31,84 +31,25 @@
 
 namespace YimMenu::Features
 {
-	static ListCommand hiddenCacheIndex = {
-		"hiddencacheindex",
-		"Hidden Cache",
-		"Selected Hidden Cache",
-		{{0, "Hidden Cache 1"}, {1, "Hidden Cache 2"}, {2, "Hidden Cache 3"}, {3, "Hidden Cache 4"}, {4, "Hidden Cache 5"}, {5, "Hidden Cache 6"}, {6, "Hidden Cache 7"}, {7, "Hidden Cache 8"}, {8, "Hidden Cache 9"}, {9, "Hidden Cache 10"}}
-	};
+	static ListCommand hiddenCacheIndex = {"hiddencacheindex", "Hidden Cache", "Selected Hidden Cache", {{0, "Hidden Cache 1"}, {1, "Hidden Cache 2"}, {2, "Hidden Cache 3"}, {3, "Hidden Cache 4"}, {4, "Hidden Cache 5"}, {5, "Hidden Cache 6"}, {6, "Hidden Cache 7"}, {7, "Hidden Cache 8"}, {8, "Hidden Cache 9"}, {9, "Hidden Cache 10"}}};
 
-	static ListCommand treasureChestIndex = {
-		"treasurechestindex",
-		"Treasure Chest",
-		"Selected Treasure Chest",
-		{{0, "Treasure Chest 1"}, {1, "Treasure Chest 2"}}
-	};
+	static ListCommand treasureChestIndex = {"treasurechestindex", "Treasure Chest", "Selected Treasure Chest", {{0, "Treasure Chest 1"}, {1, "Treasure Chest 2"}}};
 
-	static ListCommand buriedStashIndex = {
-		"buriedstashindex",
-		"Buried Stash",
-		"Selected Buried Stash",
-		{{0, "Buried Stash 1"}, {1, "Buried Stash 2"}}
-	};
+	static ListCommand buriedStashIndex = {"buriedstashindex", "Buried Stash", "Selected Buried Stash", {{0, "Buried Stash 1"}, {1, "Buried Stash 2"}}};
 
-	static ListCommand skydiveIndex = {
-		"skydiveindex",
-		"Skydive",
-		"Selected Skydive",
-		{{0, "Skydive 1"}, {1, "Skydive 2"}, {2, "Skydive 3"}, {3, "Skydive 4"}, {4, "Skydive 5"}, {5, "Skydive 6"}, {6, "Skydive 7"}, {7, "Skydive 8"}, {8, "Skydive 9"}, {9, "Skydive 10"}}
-	};
+	static ListCommand skydiveIndex = {"skydiveindex", "Skydive", "Selected Skydive", {{0, "Skydive 1"}, {1, "Skydive 2"}, {2, "Skydive 3"}, {3, "Skydive 4"}, {4, "Skydive 5"}, {5, "Skydive 6"}, {6, "Skydive 7"}, {7, "Skydive 8"}, {8, "Skydive 9"}, {9, "Skydive 10"}}};
 
-	static ListCommand timeTrialIndex = {
-		"timetrialindex",
-		"Time Trial",
-		"Selected Time Trial",
-		{{0, "Standard Time Trial"}, {1, "RC Bandito Time Trial"}, {2, "Junk Energy Bike Time Trial"}}
-	};
+	static ListCommand timeTrialIndex = {"timetrialindex", "Time Trial", "Selected Time Trial", {{0, "Standard Time Trial"}, {1, "RC Bandito Time Trial"}, {2, "Junk Energy Bike Time Trial"}}};
 
-	static ListCommand streetDealerIndex = {
-		"streetdealerindex",
-		"Street Dealer",
-		"Selected Street Dealer",
-		{{0, "Street Dealer 1"}, {1, "Street Dealer 2"}, {2, "Street Dealer 3"}}
-	};
+	static ListCommand streetDealerIndex = {"streetdealerindex", "Street Dealer", "Selected Street Dealer", {{0, "Street Dealer 1"}, {1, "Street Dealer 2"}, {2, "Street Dealer 3"}}};
 
-	static ListCommand lsTagIndex = {
-		"lstagindex",
-		"LS Tag",
-		"Selected LS Tag",
-		{{0, "LS Tag 1"}, {1, "LS Tag 2"}, {2, "LS Tag 3"}, {3, "LS Tag 4"}, {4, "LS Tag 5"}}
-	};
+	static ListCommand lsTagIndex = {"lstagindex", "LS Tag", "Selected LS Tag", {{0, "LS Tag 1"}, {1, "LS Tag 2"}, {2, "LS Tag 3"}, {3, "LS Tag 4"}, {4, "LS Tag 5"}}};
 
-	static ListCommand animalIndex = {
-	    "animalindex",
-	    "Animal",
-	    "Selected Animal",
-	    {{0, "Animal 1"}, {1, "Animal 2"}, {2, "Animal 3"}}
-	};
+	static ListCommand animalIndex = {"animalindex", "Animal", "Selected Animal", {{0, "Animal 1"}, {1, "Animal 2"}, {2, "Animal 3"}}};
 
-	static constexpr auto wildlifePhotographyAnimalHashes = std::to_array({
-	    "A_C_Boar"_J,
-	    "A_C_Cat_01"_J,
-	    "A_C_Cow"_J,
-	    "A_C_Coyote"_J,
-	    "A_C_Deer"_J,
-	    "A_C_Husky"_J,
-	    "A_C_MtLion"_J,
-	    "A_C_Pig"_J,
-	    "A_C_Poodle"_J,
-	    "A_C_Pug"_J,
-	    "A_C_Rabbit_01"_J,
-	    "A_C_Retriever"_J,
-	    "A_C_Rottweiler"_J,
-	    "A_C_shepherd"_J,
-	    "A_C_Westy"_J,
-	    "A_C_Chickenhawk"_J,
-	    "A_C_Cormorant"_J,
-	    "A_C_Crow"_J,
-	    "A_C_Hen"_J,
-	    "A_C_Seagull"_J
-	});
+	static ListCommand productIndex = {"productindex", "Product", "Selected Product", {{0, "Product 1"}, {1, "Product 2"}, {2, "Product 3"}, {3, "Product 4"}, {4, "Product 5"}, {5, "Product 6"}, {6, "Product 7"}, {7, "Product 8"}, {8, "Product 9"}, {9, "Product 10"}}};
+
+	static constexpr auto wildlifePhotographyAnimalHashes = std::to_array({"A_C_Boar"_J, "A_C_Cat_01"_J, "A_C_Cow"_J, "A_C_Coyote"_J, "A_C_Deer"_J, "A_C_Husky"_J, "A_C_MtLion"_J, "A_C_Pig"_J, "A_C_Poodle"_J, "A_C_Pug"_J, "A_C_Rabbit_01"_J, "A_C_Retriever"_J, "A_C_Rottweiler"_J, "A_C_shepherd"_J, "A_C_Westy"_J, "A_C_Chickenhawk"_J, "A_C_Cormorant"_J, "A_C_Crow"_J, "A_C_Hen"_J, "A_C_Seagull"_J});
 
 	static void SetAllDailyActivitiesCompleted(bool completed)
 	{
@@ -138,6 +79,16 @@ namespace YimMenu::Features
 		Stats::SetPackedBool(42059, completed); // Shoot Animals Photography 1
 		Stats::SetPackedBool(42060, completed); // Shoot Animals Photography 2
 		Stats::SetPackedBool(42061, completed); // Shoot Animals Photography 3
+		Stats::SetPackedBool(54672, completed); // Smoke on the Water Product 1
+		Stats::SetPackedBool(54673, completed); // Smoke on the Water Product 2
+		Stats::SetPackedBool(54674, completed); // Smoke on the Water Product 3
+		Stats::SetPackedBool(54675, completed); // Smoke on the Water Product 4
+		Stats::SetPackedBool(54676, completed); // Smoke on the Water Product 5
+		Stats::SetPackedBool(54677, completed); // Smoke on the Water Product 6
+		Stats::SetPackedBool(54678, completed); // Smoke on the Water Product 7
+		Stats::SetPackedBool(54679, completed); // Smoke on the Water Product 8
+		Stats::SetPackedBool(54680, completed); // Smoke on the Water Product 9
+		Stats::SetPackedBool(54681, completed); // Smoke on the Water Product 10
 		// Street Dealers
 		for (int i = 0; i < 3; ++i)
 		{
@@ -147,11 +98,11 @@ namespace YimMenu::Features
 			static Tunable maxAcid{3123173154};
 
 			int statIndex = 41218 + i * 5;
-			int premium   = completed ? 0 : static_cast<int>(FreemodeGeneral::Get()->StreetDealers.Dealers[i].PremiumProduct);
-			int coke      = completed ? 0 : (maxCoke.IsReady() ? maxCoke.Get<int>() : 1);
-			int meth      = completed ? 0 : (maxMeth.IsReady() ? maxMeth.Get<int>() : 2);
-			int weed      = completed ? 0 : (maxWeed.IsReady() ? maxWeed.Get<int>() : 10);
-			int acid      = completed ? 0 : (maxAcid.IsReady() ? maxAcid.Get<int>() : 10);
+			int premium = completed ? 0 : static_cast<int>(FreemodeGeneral::Get()->StreetDealers.Dealers[i].PremiumProduct);
+			int coke = completed ? 0 : (maxCoke.IsReady() ? maxCoke.Get<int>() : 1);
+			int meth = completed ? 0 : (maxMeth.IsReady() ? maxMeth.Get<int>() : 2);
+			int weed = completed ? 0 : (maxWeed.IsReady() ? maxWeed.Get<int>() : 10);
+			int acid = completed ? 0 : (maxAcid.IsReady() ? maxAcid.Get<int>() : 10);
 			Stats::SetPackedInt(statIndex + 0, premium);
 			Stats::SetPackedInt(statIndex + 1, coke);
 			Stats::SetPackedInt(statIndex + 2, meth);
@@ -175,26 +126,27 @@ namespace YimMenu::Features
 		{
 			Stats::SetPackedBool(i, completed); // Trick or Treat
 		}
-		int ttLocation   = 0;
+		int ttLocation = 0;
 		int rcttLocation = 0;
-		int bttLocation  = 0;
+		int bttLocation = 0;
 		if (auto thread = Scripts::FindScriptThread("freemode"_J))
 		{
 			ttLocation = StandardTimeTrialData::Get(thread)->Location; // gets its value from tunable TIMETRIALVARIATION
 			// we can actually manually calculate these using FreemodeGeneral::Get()->DailyReset.Seed % 14
 			rcttLocation = RCBanditoTimeTrialData::Get(thread)->Location;
-			bttLocation  = BikeTimeTrialData::Get(thread)->Location;
+			bttLocation = BikeTimeTrialData::Get(thread)->Location;
 		}
 		Stats::SetInt("MPPLY_TIMETRIAL_COMPLETED_WEEK", completed ? ttLocation : -1); // Standard Time Trial
-		Stats::SetInt("MPPLY_RCTTCOMPLETEDWEEK", completed ? rcttLocation : -1); // RC Bandito Time Trial
-		Stats::SetInt("MPPLY_BTTCOMPLETED", completed ? bttLocation : -1); // Junk Energy Bike Time Trial
-		Stats::SetInt("MPX_CBV_DELIVERED_BS", completed ? 1023 : 0); // Exotic Exports
-		Stats::SetInt("MPX_CBV_STATE", completed); // Exotic Exports
+		Stats::SetInt("MPPLY_RCTTCOMPLETEDWEEK", completed ? rcttLocation : -1);      // RC Bandito Time Trial
+		Stats::SetInt("MPPLY_BTTCOMPLETED", completed ? bttLocation : -1);            // Junk Energy Bike Time Trial
+		Stats::SetInt("MPX_CBV_DELIVERED_BS", completed ? 1023 : 0);                  // Exotic Exports
+		Stats::SetInt("MPX_CBV_STATE", completed);                                    // Exotic Exports
 	}
 
 	static void TeleportToCollectable(SCRIPT_EVENT_COLLECT_COLLECTABLE::eCollectables collectable, int index)
 	{
-		static ScriptFunction getCollectibleCoords("freemode"_J, ScriptPointer("GetCollectibleCoords", "5D ? ? ? 7D 2C 10").Add(1).Rip());
+		static ScriptFunction getCollectibleCoords("freemode"_J,
+		    ScriptPointer("GetCollectibleCoords", "5D ? ? ? 7D 2C 10").Add(1).Rip());
 		if (auto coords = getCollectibleCoords.Call<Vector3>(collectable, index))
 		{
 			Self::GetPed().TeleportTo(coords);
@@ -204,22 +156,22 @@ namespace YimMenu::Features
 	static void CollectCollectable(SCRIPT_EVENT_COLLECT_COLLECTABLE::eCollectables collectable, int index)
 	{
 		SCRIPT_EVENT_COLLECT_COLLECTABLE data;
-		data.CollectableType     = collectable;
-		data.CollectableIndex    = index;
-		data.SetCollected        = TRUE;
+		data.CollectableType = collectable;
+		data.CollectableIndex = index;
+		data.SetCollected = TRUE;
 		data.DisplayNotification = TRUE;
 		data.Send();
 	}
 
 	static joaat_t GetNextExoticExportsVehicleHash()
 	{
-		constexpr ScriptGlobal order(1944094);
+		constexpr ScriptGlobal order(1946095);
 		for (int i = 1; i <= 10; i++)
 		{
 			auto offset = *order.At(i).As<int*>();
 			if (!GPBD_Flow::Get()->Entries[Self::GetPlayer().GetId()].TunerCBVDeliveredFlags.IsSet(offset))
 			{
-				auto hash = *ScriptGlobal(1944083 + (offset + 1)).As<joaat_t*>();
+				auto hash = *ScriptGlobal(1946084 + (offset + 1)).As<joaat_t*>();
 				return hash;
 			}
 		}
@@ -239,7 +191,7 @@ namespace YimMenu::Features
 
 			if (!m_Thread)
 			{
-				int id   = Scripts::StartScript("fm_street_dealer"_J);
+				int id = Scripts::StartScript("fm_street_dealer"_J);
 				m_Thread = Scripts::FindScriptThreadByID(id);
 				if (m_Thread)
 				{
@@ -252,15 +204,16 @@ namespace YimMenu::Features
 				}
 			}
 
-			auto streetDealerData = ScriptLocal(m_Thread, 253).At(12);
+			auto streetDealerData = ScriptLocal(m_Thread, 256).At(12);
 
 			if (!initialized)
 			{
-				auto selected                                               = streetDealerIndex.GetState();
-				FreemodeGeneral::Get()->StreetDealers.ClosestDealerLocation = FreemodeGeneral::Get()->StreetDealers.Dealers[selected].Location;
-				FreemodeGeneral::Get()->StreetDealers.ClosetsDealerIndex    = selected;
+				auto selected = streetDealerIndex.GetState();
+				FreemodeGeneral::Get()->StreetDealers.ClosestDealerLocation =
+				    FreemodeGeneral::Get()->StreetDealers.Dealers[selected].Location;
+				FreemodeGeneral::Get()->StreetDealers.ClosetsDealerIndex = selected;
 
-				static ScriptFunction initStreetDealerData("fm_street_dealer"_J, ScriptPointer("InitStreetDealerData", "2D 00 07 00 00 61 E9 CE 29"));
+				static ScriptFunction initStreetDealerData("fm_street_dealer"_J, ScriptPointer("InitStreetDealerData", "2D 00 07 00 00 61"));
 				initStreetDealerData.Call<void>();
 				streetDealerData.At(5).As<SCR_BITSET<uint64_t>*>()->Set(0);
 				initialized = true;
@@ -273,13 +226,13 @@ namespace YimMenu::Features
 			{
 				// if we don't reset these, freemode won't start the script legitimately
 				FreemodeGeneral::Get()->StreetDealers.ClosestDealerLocation = -1;
-				FreemodeGeneral::Get()->StreetDealers.ClosetsDealerIndex    = -1;
+				FreemodeGeneral::Get()->StreetDealers.ClosetsDealerIndex = -1;
 
 				m_Thread->Kill();
 				m_Thread->m_Context.m_State = rage::scrThread::State::KILLED;
-				m_Thread                    = nullptr;
-				initialized                 = false;
-				m_ShouldRunScript           = false;
+				m_Thread = nullptr;
+				initialized = false;
+				m_ShouldRunScript = false;
 			}
 		}
 	}
@@ -323,7 +276,8 @@ namespace YimMenu::Features
 
 			for (int i = 0; i < 3; i++)
 			{
-				DailyObjectivesState::Get()->Objective[i] = g_SavedMPGlobals::Get()->Entries[0].GeneralSaved.DOObjectives[i].Objective;
+				DailyObjectivesState::Get()->Objective[i] =
+				    g_SavedMPGlobals::Get()->Entries[0].GeneralSaved.DOObjectives[i].Objective;
 			}
 			DailyObjectivesState::Get()->Completed = TRUE;
 			WeeklyChallenge::Get()->Entries[0].CurrentObjective = WeeklyChallenge::Get()->Entries[0].ObjectiveCountOverride;
@@ -567,29 +521,29 @@ namespace YimMenu::Features
 			if (!checkpointReward.IsReady() || !parTimeReward.IsReady() || !landingReward.IsReady())
 				return;
 
-			int index        = skydiveIndex.GetState();
-			int location     = Stats::GetInt("MPX_DAILYCOLLECT_SKYDIVES" + std::to_string(index));
+			int index = skydiveIndex.GetState();
+			int location = Stats::GetInt("MPX_DAILYCOLLECT_SKYDIVES" + std::to_string(index));
 			bool checkpoints = Stats::GetPackedInt(34837 + (index * 4)) == location;
-			bool partime     = Stats::GetPackedInt(34838 + (index * 4)) == location;
-			bool landing     = Stats::GetPackedInt(34839 + (index * 4)) == location;
+			bool partime = Stats::GetPackedInt(34838 + (index * 4)) == location;
+			bool landing = Stats::GetPackedInt(34839 + (index * 4)) == location;
 
-			*ScriptGlobal(1973628).As<int*>()             = 1;
-			*ScriptGlobal(1973628).At(1).As<int*>()       = 1;
-			*ScriptGlobal(1973628).At(3).As<int*>()       = 5;
-			*ScriptGlobal(1973628).At(4).As<int*>()       = location + 1;
-			*ScriptGlobal(1973628).At(8).At(1).As<int*>() = checkpointReward.Get<int>() / (1 + (checkpoints * 9));
-			*ScriptGlobal(1973628).At(8).At(2).As<int*>() = parTimeReward.Get<int>() / (1 + (partime * 9));
-			*ScriptGlobal(1973628).At(8).At(3).As<int*>() = landingReward.Get<int>() / (1 + (landing * 9));
+			*ScriptGlobal(1975726).As<int*>() = 1;
+			*ScriptGlobal(1975726).At(1).As<int*>() = 1;
+			*ScriptGlobal(1975726).At(3).As<int*>() = 5;
+			*ScriptGlobal(1975726).At(4).As<int*>() = location + 1;
+			*ScriptGlobal(1975726).At(8).At(1).As<int*>() = checkpointReward.Get<int>() / (1 + (checkpoints * 9));
+			*ScriptGlobal(1975726).At(8).At(2).As<int*>() = parTimeReward.Get<int>() / (1 + (partime * 9));
+			*ScriptGlobal(1975726).At(8).At(3).As<int*>() = landingReward.Get<int>() / (1 + (landing * 9));
 
 			SET_SKYDIVE_COMPLETED data;
-			data.SkydiveIndex      = index;
-			data.SkydiveLocation   = location;
+			data.SkydiveIndex = index;
+			data.SkydiveLocation = location;
 			data.AllCheckpointsHit = TRUE;
-			data.ParTimeBeaten     = TRUE;
-			data.AccurateLanding   = TRUE;
+			data.ParTimeBeaten = TRUE;
+			data.AccurateLanding = TRUE;
 			data.Send();
 
-			ScriptGlobal(1977574).At(4).As<SCR_BITSET<uint64_t>*>()->Clear(3);
+			ScriptGlobal(1979681).At(4).As<SCR_BITSET<uint64_t>*>()->Clear(3);
 		}
 	};
 
@@ -606,8 +560,8 @@ namespace YimMenu::Features
 			switch (timeTrialIndex.GetState())
 			{
 			case 0: stat = "MPPLY_TIMETRIAL_COMPLETED_WEEK"; break;
-			case 1: stat = "MPPLY_RCTTCOMPLETEDWEEK";        break;
-			case 2: stat = "MPPLY_BTTCOMPLETED";             break;
+			case 1: stat = "MPPLY_RCTTCOMPLETEDWEEK"; break;
+			case 2: stat = "MPPLY_BTTCOMPLETED"; break;
 			}
 
 			if (stat.empty() || Stats::GetInt(stat) != -1)
@@ -619,9 +573,9 @@ namespace YimMenu::Features
 			int sprite = -1;
 			switch (timeTrialIndex.GetState())
 			{
-			case 0: sprite = static_cast<int>(BlipSprite::RADAR_TEMP_2);         break;
+			case 0: sprite = static_cast<int>(BlipSprite::RADAR_TEMP_2); break;
 			case 1: sprite = static_cast<int>(BlipSprite::RADAR_RC_TIME_TRIALS); break;
-			case 2: sprite = static_cast<int>(BlipSprite::RADAR_BICYCLE_TRIAL);  break;
+			case 2: sprite = static_cast<int>(BlipSprite::RADAR_BICYCLE_TRIAL); break;
 			}
 
 			auto blip = HUD::GET_FIRST_BLIP_INFO_ID(sprite);
@@ -652,8 +606,8 @@ namespace YimMenu::Features
 			switch (timeTrialIndex.GetState())
 			{
 			case 0: stat = "MPPLY_TIMETRIAL_COMPLETED_WEEK"; break;
-			case 1: stat = "MPPLY_RCTTCOMPLETEDWEEK";        break;
-			case 2: stat = "MPPLY_BTTCOMPLETED";             break;
+			case 1: stat = "MPPLY_RCTTCOMPLETEDWEEK"; break;
+			case 2: stat = "MPPLY_BTTCOMPLETED"; break;
 			}
 
 			if (stat.empty() || Stats::GetInt(stat) != -1)
@@ -701,9 +655,10 @@ namespace YimMenu::Features
 			{
 				thread->m_Context.m_State = rage::scrThread::State::PAUSED;
 
-				*ScriptLocal(thread, 3060).At(130).At(1).As<int*>() = FreemodeGeneral::Get()->DailyReset.Seed % 14; // if we don't init this, the par time duration function will return 0 and the COMPLETED stat will be set to 0, which is bad
-				*ScriptLocal(thread, 142).At(4).As<int*>()          = 0;
-				static ScriptFunction onBTTEnd("fm_content_bicycle_time_trial"_J, ScriptPointer("OnBTTEnd", "64 ? ? ? 5D ? ? ? 75 77").Add(1).Rip());
+				*ScriptLocal(thread, 3088).At(131).At(1).As<int*>() = FreemodeGeneral::Get()->DailyReset.Seed % 14; // if we don't init this, the par time duration function will return 0 and the COMPLETED stat will be set to 0, which is bad
+				*ScriptLocal(thread, 144).At(4).As<int*>() = 0;
+				static ScriptFunction onBTTEnd("fm_content_bicycle_time_trial"_J,
+				    ScriptPointer("OnBTTEnd", "64 ? ? ? 5D ? ? ? 75 77").Add(1).Rip());
 				onBTTEnd.Call<void>();
 
 				thread->m_Context.m_State = rage::scrThread::State::KILLED;
@@ -840,8 +795,8 @@ namespace YimMenu::Features
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					int combination = *ScriptLocal(thread, 142).At(22).At(i, 2).At(1).As<int*>();
-					*ScriptLocal(thread, 142).At(22).At(i, 2).As<float*>() = combination;
+					int combination = *ScriptLocal(thread, 144).At(22).At(i, 2).At(1).As<int*>();
+					*ScriptLocal(thread, 144).At(22).At(i, 2).As<float*>() = combination;
 				}
 			}
 		}
@@ -856,8 +811,10 @@ namespace YimMenu::Features
 			if (!*Pointers.IsSessionStarted)
 				return;
 
-			static ScriptFunction getStreetDealerCoords("freemode"_J, ScriptPointer("GetStreetDealerCoords", "5D ? ? ? 5D ? ? ? 5D ? ? ? 18").Add(1).Rip());
-			if (auto coords = getStreetDealerCoords.Call<Vector3>(FreemodeGeneral::Get()->StreetDealers.Dealers[streetDealerIndex.GetState()].Location))
+			static ScriptFunction getStreetDealerCoords("freemode"_J,
+			    ScriptPointer("GetStreetDealerCoords", "5D ? ? ? 5D ? ? ? 5D ? ? ? 18").Add(1).Rip());
+			if (auto coords = getStreetDealerCoords.Call<Vector3>(
+			        FreemodeGeneral::Get()->StreetDealers.Dealers[streetDealerIndex.GetState()].Location))
 				Self::GetPed().TeleportTo(coords);
 		}
 	};
@@ -957,7 +914,7 @@ namespace YimMenu::Features
 
 			if (auto thread = Scripts::FindScriptThread("fm_content_daily_bounty"_J))
 			{
-				if (auto coords = *ScriptLocal(thread, 239).At(434).At(1).At(0, 4).As<Vector3*>())
+				if (auto coords = *ScriptLocal(thread, 241).At(434).At(1).At(0, 4).As<Vector3*>())
 				{
 					Self::GetPed().TeleportTo(coords);
 				}
@@ -1004,13 +961,65 @@ namespace YimMenu::Features
 				if (index < 0 || index >= wildlifePhotographyAnimalHashes.size())
 					return;
 
-				ScriptGlobal(2708543).At(544).As<SCR_BITSET<uint64_t>*>()->Set(6);
-				*ScriptGlobal(2708543).At(547).As<joaat_t*>() = wildlifePhotographyAnimalHashes[index];
-				*ScriptGlobal(2708543).At(548).As<int*>()     = *Pointers.GameTimer - 1; // bypass 2 sec delay
+				ScriptGlobal(2708777).At(544).As<SCR_BITSET<uint64_t>*>()->Set(6);
+				*ScriptGlobal(2708777).At(548).As<joaat_t*>() = wildlifePhotographyAnimalHashes[index];
+				*ScriptGlobal(2708777).At(549).As<int*>() = *Pointers.GameTimer - 1; // bypass 2 sec delay
 			}
 			else
 			{
 				Notifications::Show("Shoot Animals Photography", "This animal has already been photographed.", NotificationType::Error);
+			}
+		}
+	};
+
+	class TeleportToProduct : public Command
+	{
+		using Command::Command;
+
+		virtual void OnCall() override
+		{
+			if (!*Pointers.IsSessionStarted)
+				return;
+
+			if (Stats::GetInt("MPX_SB_WEED_SHOP_OWNED") == 0)
+			{
+				Notifications::Show("Smoke on the Water", "You must own a Smoke on the Water property.", NotificationType::Error);
+				return;
+			}
+
+			if (!Stats::GetPackedBool(54672 + productIndex.GetState()))
+			{
+				TeleportToCollectable(SCRIPT_EVENT_COLLECT_COLLECTABLE::eCollectables::SmokeOnTheWater, productIndex.GetState());
+			}
+			else
+			{
+				Notifications::Show("Smoke on the Water", "This product has already been collected.", NotificationType::Error);
+			}
+		}
+	};
+
+	class CollectProduct : public Command
+	{
+		using Command::Command;
+
+		virtual void OnCall() override
+		{
+			if (!*Pointers.IsSessionStarted)
+				return;
+
+			if (Stats::GetInt("MPX_SB_WEED_SHOP_OWNED") == 0)
+			{
+				Notifications::Show("Smoke on the Water", "You must own a Smoke on the Water property.", NotificationType::Error);
+				return;
+			}
+
+			if (!Stats::GetPackedBool(54672 + productIndex.GetState()))
+			{
+				CollectCollectable(SCRIPT_EVENT_COLLECT_COLLECTABLE::eCollectables::SmokeOnTheWater, productIndex.GetState());
+			}
+			else
+			{
+				Notifications::Show("Smoke on the Water", "This product has already been collected.", NotificationType::Error);
 			}
 		}
 	};
@@ -1060,4 +1069,7 @@ namespace YimMenu::Features
 
 	static SpawnAnimal _SpawnAnimal{"spawnanimal", "Spawn Animal", "Spawns the selected animal."};
 	static PhotographAnimal _PhotographAnimal{"photographanimal", "Photograph Animal", "Photographs the selected animal."};
+
+	static TeleportToProduct _TeleportToProduct{"tptoproduct", "Teleport to Product", "Teleports to the selected product."};
+	static CollectProduct _CollectProduct{"collectproduct", "Collect Product", "Collects the selected product."};
 }
