@@ -172,7 +172,7 @@ namespace YimMenu::Submenus
 		auto customWeapons = std::make_shared<Group>("");
 		auto paintGunGroup = std::make_shared<Group>("");
 
-		// TODO: this will not work, never, because it is not changing in every frame
+		// TODO: this will not work, never, because it is not changing in every frame, it always returns false, _CustomWeaponType.GetState() is always 0
 		auto isGravityGunEnabled = [] {
 			return static_cast<Features::CustomWeapons>(Features::_CustomWeaponType.GetState()) == Features::CustomWeapons::GRAVITY_GUN;
 		};
