@@ -4,41 +4,36 @@
 #include "core/frontend/Notifications.hpp"
 #include "game/backend/Self.hpp"
 #include "game/gta/Object.hpp"
-#include "game/gta/data/DecalTypes.hpp"
+#include "types/entity/DecalTypes.hpp"
 #include "types/script/Timer.hpp"
+#include "game/gta/RayCast.hpp"
 
 namespace YimMenu::Features
 {
 	void CustomWeapon::OnTick()
 	{
+		bool isCustomWeaponActionAllowed = !_CustomWeaponEnabledOnWeaponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2);
+
+		if (!isCustomWeaponActionAllowed)
+			return;
+
 		CustomWeapons selectedWeaponType = static_cast<CustomWeapons>(_CustomWeaponType.GetState());
-
-		if (bool isGravityGunSelected = (selectedWeaponType == CustomWeapons::GRAVITY_GUN); _IsGravityGunEnabled.GetState() != isGravityGunSelected)
-			_IsGravityGunEnabled.SetState(isGravityGunSelected);
-
-		if (bool isVehicleGunSelected = (selectedWeaponType == CustomWeapons::VEHICLE_GUN); _IsVehicleGunEnabled.GetState() != isVehicleGunSelected)
-			_IsVehicleGunEnabled.SetState(isVehicleGunSelected);
-
-		if (bool isPaintGunSelected = (selectedWeaponType == CustomWeapons::PAINT_GUN); _IsPaintGunEnabled.GetState() != isPaintGunSelected)
-			_IsPaintGunEnabled.SetState(isPaintGunSelected);
 
 		for (const auto& control : attackControls)
 			PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 
 		Entity m_Entity{nullptr};
-		bool isCustomWeaponActionAllowed = !_CustomWeaponEnabledOnWeaponOut.GetState() || WEAPON::IS_PED_ARMED(Self::GetPed().GetHandle(), 4 | 2);
-
+		
 		switch (selectedWeaponType)
 		{
 		case CustomWeapons::CAGE_GUN:
 		{
-			if (isCustomWeaponActionAllowed)
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
-					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
-					{
-						if (RayCast(m_Entity))
+					FiberPool::Push([=]() mutable {
+						if (RayCast(&m_Entity).Cast())
 						{
 							if (m_Entity.IsPed())
 							{
@@ -52,57 +47,31 @@ namespace YimMenu::Features
 								Notifications::Show("Custom Weapon", "Entity is not a ped.", NotificationType::Warning);
 							}
 						}
-						else
-						{
-							Notifications::Show("Custom Weapon", "No entity found.", NotificationType::Warning);
-						}
-					}
+					});
 				}
 			}
 			break;
 		}
 		case CustomWeapons::DELETE_GUN:
 		{
-			if (isCustomWeaponActionAllowed)
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
-					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
+					if (RayCast(&m_Entity).Cast())
 					{
-						FiberPool::Push([=]() mutable {
-							if (RayCast(m_Entity))
-							{
-								if (m_Entity.IsPed() && m_Entity.IsPlayer())
-								{
-									Notifications::Show("Custom Weapon", "Player entity cannot be deleted.", NotificationType::Warning);
-								}
-								else
-								{
-									auto location = m_Entity.GetPosition();
-									auto distance = Self::GetPed().GetPosition().GetDistance(location);
+						if (m_Entity.IsPed() && m_Entity.IsPlayer())
+							Notifications::Show("Custom Weapon", "Player entity cannot be deleted.", NotificationType::Warning);
+						else
+						{
+							auto location = m_Entity.GetPosition();
+							auto distance = Self::GetPed().GetPosition().GetDistance(location);
 
-									if (distance > 500)
-									{
-										Notifications::Show("Custom Weapon", "Entity is too far.", NotificationType::Warning);
-									}
-									else
-									{
-										if (m_Entity.RequestControl(300))
-										{
-											m_Entity.Delete();
-										}
-										else
-										{
-											Notifications::Show("Custom Weapon", "Failed to take control of entity.", NotificationType::Error);
-										}
-									}
-								}
-							}
+							if (distance > 500)
+								Notifications::Show("Custom Weapon", "Entity is too far.", NotificationType::Warning);
 							else
-							{
-								Notifications::Show("Custom Weapon", "No entity found.", NotificationType::Warning);
-							}
-						});
+								m_Entity.Delete();
+						}
 					}
 				}
 			}
@@ -153,13 +122,13 @@ namespace YimMenu::Features
 			};
 
 			FiberPool::Push([=]() mutable {
-				if (isCustomWeaponActionAllowed && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
 					location = Self::GetPed().GetPosition();
 
 					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
 					{
-						if (RayCast(m_Entity))
+						if (RayCast(&m_Entity).Cast())
 						{
 							auto entityHandle = m_Entity.GetHandle();
 
@@ -186,7 +155,6 @@ namespace YimMenu::Features
 									{
 										TASK::SET_HIGH_FALL_TASK(entityHandle, 0, 0, 0);
 									}
-									Notifications::Show("Custom Weapon", "Entity set.", NotificationType::Success);
 
 									entities.push_back(m_Entity);
 								}
@@ -220,47 +188,38 @@ namespace YimMenu::Features
 					}
 
 					entities.clear();
-
-					Notifications::Show("Custom Weapon", "Entity is released.", NotificationType::Success);
 				}
 			});
 			break;
 		}
 		case CustomWeapons::STEAL_VEHICLE_GUN:
 		{
-			if (isCustomWeaponActionAllowed)
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
-					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
+					if (RayCast(&m_Entity).Cast())
 					{
-						FiberPool::Push([=]() mutable {
-							if (RayCast(m_Entity))
+						auto entityHandle = m_Entity.GetHandle();
+
+						if (m_Entity.IsVehicle())
+						{
+							for (size_t i = 0; i < 8 && !m_Entity.As<Vehicle>().IsSeatFree(-1); i++)
 							{
-								auto entityHandle = m_Entity.GetHandle();
+								const auto ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(entityHandle, -1, 0);
 
-								if (m_Entity.IsVehicle())
-								{
-									for (size_t i = 0; i < 8 && !m_Entity.As<Vehicle>().IsSeatFree(-1); i++)
-									{
-										const auto ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(entityHandle, -1, 0);
-										TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
+								if (PED::IS_PED_A_PLAYER(ped))
+									return
 
-										ScriptMgr::Yield(100ms);
-									}
-
-									Self::GetPed().SetInVehicle(m_Entity.As<Vehicle>(), -1);
-								}
-								else
-								{
-									Notifications::Show("Custom Weapon", "Invalid vehicle.", NotificationType::Warning);
-								}
+								TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
 							}
-							else
-							{
-								Notifications::Show("Custom Weapon", "No entity found.", NotificationType::Warning);
-							}
-						});
+
+							Self::GetPed().SetInVehicle(m_Entity.As<Vehicle>(), -1);
+						}
+						else
+						{
+							Notifications::Show("Custom Weapon", "Invalid vehicle.", NotificationType::Warning);
+						}
 					}
 				}
 			}
@@ -268,26 +227,19 @@ namespace YimMenu::Features
 		}
 		case CustomWeapons::REPAIR_GUN:
 		{
-			if (isCustomWeaponActionAllowed)
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
-					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
+					if (RayCast(&m_Entity).Cast())
 					{
-						if (RayCast(m_Entity))
+						if (m_Entity.IsVehicle())
 						{
-							if (m_Entity.IsVehicle())
-							{
-								m_Entity.As<Vehicle>().Fix();
-							}
-							else
-							{
-								Notifications::Show("Custom Weapon", "Invalid vehicle.", NotificationType::Warning);
-							}
+							m_Entity.As<Vehicle>().Fix();
 						}
 						else
 						{
-							Notifications::Show("Custom Weapon", "No entity found.", NotificationType::Warning);
+							Notifications::Show("Custom Weapon", "Invalid vehicle.", NotificationType::Warning);
 						}
 					}
 				}
@@ -298,77 +250,77 @@ namespace YimMenu::Features
 		{
 			static TIMER vehicleGunTimer;
 
-			if (isCustomWeaponActionAllowed)
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && vehicleGunTimer.HasTimePassed(100, true))
 				{
-					if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && vehicleGunTimer.HasTimePassed(100, true))
+					if (!_VehicleGunModel.GetString().length())
 					{
-						if (!_VehicleGunModel.GetString().length())
-						{
-							Notifications::Show("Custom Weapon", "No vehicle model name provided.", NotificationType::Error);
-							return;
-						}
-
-						auto modelHash = Joaat(_VehicleGunModel.GetString());
-						if (!STREAMING::IS_MODEL_IN_CDIMAGE(modelHash))
-						{
-							Notifications::Show("Custom Weapon", "Invalid vehicle model name provided.", NotificationType::Error);
-						}
-						else
-						{
-							Vector3 location = CAM::GET_GAMEPLAY_CAM_COORD();
-
-							FiberPool::Push([location, modelHash]() {
-								constexpr int rotation_order = 2;
-								auto rot = CAM::GET_GAMEPLAY_CAM_ROT(rotation_order);
-
-								float pitch = Math::DegToRad(rot.x); // vertical
-								//float roll = rot.y;
-								float yaw = Math::DegToRad(rot.z); // horizontal
-
-								Vector3 forward{-sin(yaw) * cos(pitch), cos(yaw) * cos(pitch), sin(pitch)};
-								Vector3 spawnLoc = location;
-
-								spawnLoc.x += forward.x * 10.f;
-								spawnLoc.y += forward.y * 10.f;
-								spawnLoc.z += forward.z * 10.f;
-
-								auto veh = Vehicle::Create(modelHash, spawnLoc, Self::GetPed().GetHeading(), false);
-
-								Vector3 velocity{forward.x * 150.f, forward.y * 150.f, forward.z * 150.f};
-
-								veh.SetRotation(rot, rotation_order);
-								veh.SetVelocity(velocity);
-
-								auto vehHandle = veh.GetHandle();
-								ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(&vehHandle);
-							});
-						}
-
-						vehicleGunTimer.Reset(true);
+						Notifications::Show("Custom Weapon", "No vehicle model name provided.", NotificationType::Error);
+						return;
 					}
+
+					auto modelHash = Joaat(_VehicleGunModel.GetString());
+					if (!STREAMING::IS_MODEL_IN_CDIMAGE(modelHash))
+					{
+						Notifications::Show("Custom Weapon", "Invalid vehicle model name provided.", NotificationType::Error);
+					}
+					else
+					{
+						Vector3 location = CAM::GET_GAMEPLAY_CAM_COORD();
+
+						FiberPool::Push([location, modelHash]() {
+							constexpr int rotation_order = 2;
+							auto rot = CAM::GET_GAMEPLAY_CAM_ROT(rotation_order);
+
+							float pitch = Math::DegToRad(rot.x); // vertical
+							//float roll = rot.y;
+							float yaw = Math::DegToRad(rot.z); // horizontal
+
+							Vector3 forward{-sin(yaw) * cos(pitch), cos(yaw) * cos(pitch), sin(pitch)};
+							Vector3 spawnLoc = location;
+
+							spawnLoc.x += forward.x * 10.f;
+							spawnLoc.y += forward.y * 10.f;
+							spawnLoc.z += forward.z * 10.f;
+
+							auto veh = Vehicle::Create(modelHash, spawnLoc, Self::GetPed().GetHeading(), false);
+
+							Vector3 velocity{forward.x * 150.f, forward.y * 150.f, forward.z * 150.f};
+
+							veh.SetRotation(rot, rotation_order);
+							veh.SetVelocity(velocity);
+
+							auto vehHandle = veh.GetHandle();
+							ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(&vehHandle);
+						});
+					}
+
+					vehicleGunTimer.Reset(true);
 				}
 			}
 			break;
 		}
 		case CustomWeapons::TELEPORT_GUN:
 		{
-			if (isCustomWeaponActionAllowed)
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
-					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
-					{
-						Vector3 coords;
+					Vector3 coords;
 
-						if (RayCast(coords))
+					if (RayCast(&m_Entity, &coords).Cast())
+					{
+						if (m_Entity.IsVehicle())
 						{
-							Self::GetPed().TeleportTo(coords);
+							Self::GetPed().SetInVehicle(m_Entity.As<Vehicle>(), -2);
 						}
 						else
 						{
-							Notifications::Show("Custom Weapon", "Invalid teleport location.", NotificationType::Warning);
+							if (Self::GetVehicle())
+								TASK::CLEAR_PED_TASKS_IMMEDIATELY(Self::GetPed().GetHandle());
+
+							Self::GetPed().TeleportTo(coords);
 						}
 					}
 				}
@@ -377,56 +329,47 @@ namespace YimMenu::Features
 		}
 		case CustomWeapons::PAINT_GUN:
 		{
-			static Vector3 paintGunColor;
-			ImVec4 color;
+			static Color paintGunColor;
+			Color color;
 
 			if (_PaintGunRainbowColorEnabled.GetState())
 			{
 				RainbowColor(paintGunColor, _PaintGunRainbowColorSpeed.GetState(), static_cast<RainbowColorStyle>(_PaintGunRainbowColorStyle.GetState()));
-				color = ImVec4(paintGunColor.x / 255.0f, paintGunColor.y / 255.0f, paintGunColor.z / 255.0f, 1.0f);
+				color = Color(paintGunColor.r / 255.0f, paintGunColor.g / 255.0f, paintGunColor.b / 255.0f, paintGunColor.a / 255.0f);
 			}
 			else
 			{
-				color = _PaintGunColor.GetState();
+				color = Color(_PaintGunColor.GetState());
 			}
 
-			if (isCustomWeaponActionAllowed)
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
-					if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
-					{
-						Vector3 coords;
+					Vector3 coords;
 
-						FiberPool::Push([=]() mutable {
-							if (RayCast(coords))
-							{
-								GRAPHICS::ADD_DECAL((int)DecalTypes::splatters_paint,
-									coords.x,
-									coords.y,
-									coords.z,
-									0,  //true
-									0,  //true
-									-1, //true
-									0,
-									1.f,
-									0.f,  // always 0
-									0.5f, //size x
-									0.4f, //size y
-									color.x,
-									color.y,
-									color.z,
-									color.w,
-									-1,
-									true,
-									false,
-									false);
-							}
-							else
-							{
-								Notifications::Show("Custom Weapon", "Invalid paint location.", NotificationType::Warning);
-							}
-						});
+					if (RayCast(&coords).Cast())
+					{
+						GRAPHICS::ADD_DECAL((int)DecalTypes::splatters_paint,
+							coords.x,
+							coords.y,
+							coords.z,
+							0,  //true
+							0,  //true
+							-1, //true
+							0,
+							1.f,
+							0.f,  // always 0
+							0.5f, //size x
+							0.4f, //size y
+							color.r,
+							color.g,
+							color.b,
+							color.a,
+							-1,
+							true,
+							false,
+							false);
 					}
 				}
 			}

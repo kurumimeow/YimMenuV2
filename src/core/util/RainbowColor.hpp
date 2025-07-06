@@ -1,31 +1,53 @@
 #pragma once
-#include "types/script/Timer.hpp"
-#include "types/script/types.hpp"
 
 namespace YimMenu
 {
+	struct Color
+	{
+		float r;
+		float g;
+		float b;
+		float a;
+
+		Color(float red = 0.f, float green = 0.f, float blue = 0.f, float alpha = 255.f) :
+			r(red),
+			g(green),
+			b(blue),
+			a(alpha)
+		{
+		}
+
+		Color(ImVec4 color) :
+			r(color.x),
+			g(color.y),
+			b(color.z),
+			a(color.w)
+		{
+		}
+	};
+	
 	enum class RainbowColorStyle
 	{
 		Fade,
 		Spasm
 	};
 
-	inline void RainbowColor(Vector3& color, int speed = 1, RainbowColorStyle type = RainbowColorStyle::Fade)
+	inline void RainbowColor(Color& color, int speed = 1, RainbowColorStyle type = RainbowColorStyle::Fade)
 	{
-		static TIMER spasmTimer;
 		static bool firstInit = true;
+		static std::chrono::system_clock::time_point lastRunTime;
 
 		if (type == RainbowColorStyle::Spasm)
 		{
-			int delay = std::max(10, 1010 - (speed * 100));
+			auto delay = std::chrono::milliseconds(std::max(10, 1010 - (speed * 100)));
 
-			if (spasmTimer.HasTimePassed(delay))
+			if (lastRunTime + delay < std::chrono::system_clock::now())
 			{
-				color.x = rand() % 256;
-				color.y = rand() % 256;
-				color.z = rand() % 256;
+				color.r = rand() % 256;
+				color.g = rand() % 256;
+				color.b = rand() % 256;
 
-				spasmTimer.Reset();
+				lastRunTime = std::chrono::system_clock::now();
 				firstInit = true;
 			}
 		}
@@ -34,30 +56,30 @@ namespace YimMenu
 		{
 			if (firstInit)
 			{
-				color.x   = 255;
-				color.y   = 0;
-				color.z   = 0;
+				color.r   = 255;
+				color.g   = 0;
+				color.b   = 0;
 				firstInit = false;
 			}
 
-			if (color.x > 0 && color.z == 0)
+			if (color.r > 0 && color.b == 0)
 			{
-				color.y += speed;
-				color.x -= speed;
+				color.g += speed;
+				color.r -= speed;
 			}
-			if (color.y > 0 && color.x == 0)
+			if (color.g > 0 && color.r == 0)
 			{
-				color.z += speed;
-				color.y -= speed;
+				color.b += speed;
+				color.g -= speed;
 			}
-			if (color.z > 0 && color.y == 0)
+			if (color.b > 0 && color.g == 0)
 			{
-				color.x += speed;
-				color.z -= speed;
+				color.r += speed;
+				color.b -= speed;
 			}
-			color.x = std::clamp(color.x, 0.f, 255.f);
-			color.y = std::clamp(color.y, 0.f, 255.f);
-			color.z = std::clamp(color.z, 0.f, 255.f);
+			color.r = std::clamp(color.r, 0.f, 255.f);
+			color.g = std::clamp(color.g, 0.f, 255.f);
+			color.b = std::clamp(color.b, 0.f, 255.f);
 		}
 	}
 }

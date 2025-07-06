@@ -37,70 +37,6 @@ namespace YimMenu::Features
 		ControllerInputs::INPUT_VEH_FLY_ATTACK2,
 	};
 
-	static bool RayCast(Entity& entity)
-	{
-		int handle;
-		BOOL hit;
-		Vector3 dontCare;
-
-		Vector3 camCoords = CAM::GET_GAMEPLAY_CAM_COORD();
-		Vector3 rot       = CAM::GET_GAMEPLAY_CAM_ROT(2);
-		Vector3 dir       = Math::RotationToDirection(rot);
-		Vector3 farCoords;
-
-		farCoords.x = camCoords.x + dir.x * 1000;
-		farCoords.y = camCoords.y + dir.y * 1000;
-		farCoords.z = camCoords.z + dir.z * 1000;
-
-		auto ray        = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x,
-			camCoords.y,
-			camCoords.z,
-			farCoords.x,
-			farCoords.y,
-			farCoords.z,
-			-1,
-			0,
-			7);
-		auto testResult = SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &dontCare, &dontCare, &handle);
-
-		if (testResult == 2 && hit == TRUE)
-		{
-			entity = Entity(handle);
-			return true;
-		}
-
-		return false;
-	}
-
-	static bool RayCast(Vector3& coord)
-	{
-		int handle;
-		BOOL hit;
-		Vector3 dontCare;
-
-		Vector3 camCoords = CAM::GET_GAMEPLAY_CAM_COORD();
-		Vector3 rot       = CAM::GET_GAMEPLAY_CAM_ROT(2);
-		Vector3 dir       = Math::RotationToDirection(rot);
-		Vector3 farCoords;
-
-		farCoords.x = camCoords.x + dir.x * 1000;
-		farCoords.y = camCoords.y + dir.y * 1000;
-		farCoords.z = camCoords.z + dir.z * 1000;
-
-		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x,
-			camCoords.y,
-			camCoords.z,
-			farCoords.x,
-			farCoords.y,
-			farCoords.z,
-			-1,
-			0,
-			7);
-		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &coord, &dontCare, &handle);
-
-		return (bool)hit;
-	}
-
 	static std::vector<std::pair<int, const char*>> g_CustomWeaponTypes = {
 		{static_cast<int>(CustomWeapons::CAGE_GUN), "Cage Gun"},
 		{static_cast<int>(CustomWeapons::DELETE_GUN), "Delete Gun"},
@@ -128,9 +64,6 @@ namespace YimMenu::Features
 
 	static CustomWeapon _CustomWeapon{"customweapon", "Custom Weapon", "Modifies weapon ability"};
 	static BoolCommand _CustomWeaponEnabledOnWeaponOut{"customweaponenabledonweaponout", "Enable Only if Weapon is Out", "Enables custom weapon only when weapon is out", true};
-	static BoolCommand _IsGravityGunEnabled{"isgravitygunenabled", "Is Gravity Gun Enabled", "Returns true if gravity gun is enabled", false};
-	static BoolCommand _IsVehicleGunEnabled{"isvehiclegunenabled", "Is Vehicle Gun Enabled", "Returns true if vehicle gun is enabled", false};
-	static BoolCommand _IsPaintGunEnabled{"ispaintgunenabled", "Is Paint Gun Enabled", "Returns true if paint gun is enabled", false};
 	static BoolCommand _GravityGunLaunchOnRelease{"gravitygunlaunchonrelease", "Launch Entity on Release", "Launches entity when released", false};
 	static StringCommand _VehicleGunModel{"vehiclegunmodel", "Vehicle Model", "Model of the vehicle"};
 	static ColorCommand _PaintGunColor{"paintguncolor", "Paint Gun Color", "Color of the paint gun"};
