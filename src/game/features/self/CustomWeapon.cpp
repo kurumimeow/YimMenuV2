@@ -335,7 +335,7 @@ namespace YimMenu::Features
 			if (_PaintGunRainbowColorEnabled.GetState())
 			{
 				RainbowColor(paintGunColor, _PaintGunRainbowColorSpeed.GetState(), static_cast<RainbowColorStyle>(_PaintGunRainbowColorStyle.GetState()));
-				color = Color(paintGunColor.r / 255.0f, paintGunColor.g / 255.0f, paintGunColor.b / 255.0f, paintGunColor.a / 255.0f);
+				color = Color(paintGunColor.r / 255.f, paintGunColor.g / 255.f, paintGunColor.b / 255.f, paintGunColor.a / 255.f);
 			}
 			else
 			{
