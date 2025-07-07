@@ -7,6 +7,7 @@
 #include "game/gta/Scripts.hpp"
 #include "game/gta/ScriptFunction.hpp"
 #include "types/script/scrThread.hpp"
+#include "core/commands/Commands.hpp"
 #include "game/features/self/CustomWeapon.hpp"
 
 namespace YimMenu::Submenus
@@ -164,7 +165,7 @@ namespace YimMenu::Submenus
 		}
 	}
 
-	std::shared_ptr<Group> RenderCustomWeaponsMenu()
+	static std::shared_ptr<Group> RenderCustomWeaponsMenu()
 	{
 		auto customWeaponsGroup = std::make_shared<Group>("Custom Weapons");
 
@@ -172,17 +173,18 @@ namespace YimMenu::Submenus
 		auto customWeapons = std::make_shared<Group>("");
 		auto paintGunGroup = std::make_shared<Group>("");
 
-		// TODO: this will not work, never, because it is not changing in every frame, it always returns false, _CustomWeaponType.GetState() is always 0
-		auto isGravityGunEnabled = [] {
-			return static_cast<Features::CustomWeapons>(Features::_CustomWeaponType.GetState()) == Features::CustomWeapons::GRAVITY_GUN;
+		auto cmd = Commands::GetCommand<ListCommand>("customweapontype"_J);
+		
+		auto isGravityGunEnabled = [cmd] {
+			return static_cast<Features::CustomWeapons>(cmd->GetState()) == Features::CustomWeapons::GRAVITY_GUN;
 		};
 
-		auto isVehicleGunEnabled = [] {
-			return static_cast<Features::CustomWeapons>(Features::_CustomWeaponType.GetState()) == Features::CustomWeapons::VEHICLE_GUN;
+		auto isVehicleGunEnabled = [cmd] {
+			return static_cast<Features::CustomWeapons>(cmd->GetState()) == Features::CustomWeapons::VEHICLE_GUN;
 		};
 
-		auto isPaintGunEnabled = [] {
-			return static_cast<Features::CustomWeapons>(Features::_CustomWeaponType.GetState()) == Features::CustomWeapons::PAINT_GUN;
+		auto isPaintGunEnabled = [cmd] {
+			return static_cast<Features::CustomWeapons>(cmd->GetState()) == Features::CustomWeapons::PAINT_GUN;
 		};
 
 		cutomWeaponTypes->AddItem(std::make_shared<ListCommandItem>("customweapontype"_J));
